@@ -1,6 +1,6 @@
 const Main = () => {
   return (
-    <main></main>
+    <main className="grid grid-cols-12"></main>
   )
 }
 

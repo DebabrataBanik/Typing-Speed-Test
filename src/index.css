@@ -31,4 +31,13 @@
   body{
     @apply font-sora bg-neutral-900 text-neutral-0;
   }
+  header{
+    @apply flex items-center justify-between mt-4 mb-8 sm:mt-8 sm:mb-10 lg:mb-16;
+  }
+}
+
+@layer components{
+  .wrapper{
+    @apply mx-auto max-w-[1216px] px-4 sm:px-8 xl:px-0;
+  }
 }
