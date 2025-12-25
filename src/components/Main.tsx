@@ -1,6 +1,10 @@
+import Stats from "./Stats"
+
 const Main = () => {
   return (
-    <main className="grid grid-cols-12"></main>
+    <main className="flex flex-col gap-8">
+      <Stats />
+    </main>
   )
 }
 

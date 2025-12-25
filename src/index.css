@@ -13,6 +13,7 @@
 
   --color-neutral-900: hsl(0, 0%, 7%);
   --color-neutral-800: hsl(0, 0%, 15%);
+  --color-neutral-700: #3A3A3A;
   --color-neutral-500: hsl(240, 3%, 46%);
   --color-neutral-400: hsl(240, 1%, 59%);
   --color-neutral-0: hsl(0, 0%, 100%);
@@ -34,10 +35,23 @@
   header{
     @apply flex items-center justify-between mt-4 mb-8 sm:mt-8 sm:mb-10 lg:mb-16;
   }
+  button{
+    @apply px-2.5 py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] cursor-pointer;
+  }
 }
 
 @layer components{
   .wrapper{
     @apply mx-auto max-w-[1216px] px-4 sm:px-8 xl:px-0;
   }
+  .stats_label{
+    @apply text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400 flex items-center flex-col sm:flex-row gap-2 sm:gap-3;
+  }
+  .stats{
+    @apply text-2xl font-bold leading-none tracking-normal;
+  }
+  .stats_bar{
+    @apply w-px xl:h-[80%] sm:h-6 h-14 bg-neutral-700;
+  }
+  
 }
