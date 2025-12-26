@@ -26,11 +26,32 @@ const Stats = () => {
               <button>Hard</button>
             </div> 
           </div>
-          <button className="sm:hidden flex-1 flex items-center justify-center gap-2.5">
-            Hard
-            <img src={ArrowDown} /> 
-          </button>
+
+          <div className="sm:hidden flex-1 flex justify-center">
+            <select>
+              <button>
+                <selectedcontent></selectedcontent>
+                <span>
+                  <img src={ArrowDown} />
+                </span>
+              </button>
+              <option value="easy">
+                <span className="checkbox"></span>
+                Easy
+              </option>
+              <option value="medium">
+                <span className="checkbox"></span>
+                Medium
+              </option>
+              <option value="hard">
+                <span className="checkbox"></span>
+                Hard
+              </option>
+            </select>
+          </div>
+
           <span className="hidden sm:block stats_bar h-8 xl:h-full"></span>
+
           <div className="hidden sm:flex items-center gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
@@ -38,12 +59,29 @@ const Stats = () => {
               <button>Passage</button>
             </div>
           </div>
-          <button className="sm:hidden flex-1 flex items-center justify-center gap-2.5">
-            Timed (60s)
-            <img src={ArrowDown} /> 
-          </button>
+
+          <div className="sm:hidden flex-1 flex justify-center">
+            <select>
+              <button>
+                <selectedcontent></selectedcontent>
+                <span>
+                  <img src={ArrowDown} />
+                </span>
+              </button>
+              <option value="timed">
+                <span className="checkbox"></span>
+                Timed (60s)
+              </option>
+              <option value="passage">
+                <span className="checkbox"></span>
+                Passage
+              </option>
+            </select>
+          </div>
+
         </div>
       </div>
+
       <hr className="col-span-12 text-neutral-700"/>
     </div>
   )
