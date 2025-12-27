@@ -21,14 +21,14 @@ const Stats = () => {
           <div className="hidden sm:flex items-center justify-between gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
-              <button>Easy</button>
+              <button className="active">Easy</button>
               <button>Medium</button>
               <button>Hard</button>
             </div> 
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select>
+            <select name="difficulty">
               <button>
                 <selectedcontent></selectedcontent>
                 <span>
@@ -55,13 +55,13 @@ const Stats = () => {
           <div className="hidden sm:flex items-center gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
-              <button>Timed (60s)</button>
+              <button className="active">Timed (60s)</button>
               <button>Passage</button>
             </div>
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select>
+            <select name="mode">
               <button>
                 <selectedcontent></selectedcontent>
                 <span>

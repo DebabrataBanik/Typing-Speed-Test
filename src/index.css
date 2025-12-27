@@ -33,10 +33,20 @@
     @apply font-sora bg-neutral-900 text-neutral-0;
   }
   header{
-    @apply flex items-center justify-between mt-4 mb-8 sm:mt-8 sm:mb-10 lg:mb-16;
+    @apply flex items-center justify-between mt-4 sm:mt-8 ;
+  }
+  main{
+    @apply my-8 sm:my-10 xl:my-16;
   }
   button{
-    @apply px-2.5 py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] cursor-pointer;
+    @apply px-2.5 py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] cursor-pointer transition-all duration-300 outline-offset-2 outline-blue-600;
+    
+  }
+  button:hover{
+    @apply border-blue-600 text-blue-600;
+  }
+  button:active{
+    @apply outline-2 outline-offset-2 outline-blue-600;
   }
   
   select{
@@ -75,6 +85,10 @@
   option:not(:last-child){
     border-bottom: 1px solid #3A3A3A;
   }
+
+  footer{
+    @apply mt-8 flex justify-center;
+  }
   
 }
 
@@ -97,6 +111,14 @@
 
   option:checked .checkbox{
     border: 5px solid var(--color-blue-400);
+  }
+
+  .active{
+    @apply border-blue-600 text-blue-600;
+  }
+  
+  .restart-btn{
+    @apply flex items-center gap-2.5 rounded-xl bg-neutral-800 border-none px-4 py-2.5 text-xl font-semibold leading-[1.2] -tracking-[0.3px] hover:text-neutral-0 active:outline-none; 
   }
 }
 
