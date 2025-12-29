@@ -4,6 +4,7 @@ const Stats = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col xl:grid grid-cols-12 gap-8">
+        {/* Left Stats */}
         <div className="col-span-5 flex items-center justify-between sm:justify-start xl:justify-between gap-6">
           <div className="stats_label">
             WPM: <span className="stats text-neutral-0">40</span>
@@ -17,13 +18,25 @@ const Stats = () => {
             Time: <span className="stats text-yellow-400">0:46</span>
           </div>
         </div>
+        
+        {/* Right Settings */}
         <div className="col-span-6 col-start-7 flex items-center gap-3.5">
+          {/* Difficulty Settings */}
           <div className="hidden sm:flex items-center justify-between gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
-              <button className="active">Easy</button>
-              <button>Medium</button>
-              <button>Hard</button>
+              <label>
+                <input type="radio" name="difficulty" value='easy' />
+                Easy
+              </label>
+              <label>
+                <input type="radio" name="difficulty" value='medium' />
+                Medium
+              </label>
+              <label>
+                <input type="radio" name="difficulty" value='hard' />
+                Hard
+              </label>
             </div> 
           </div>
 
@@ -50,13 +63,21 @@ const Stats = () => {
             </select>
           </div>
 
+          {/* Separator */}
           <span className="hidden sm:block stats_bar h-8 xl:h-full"></span>
 
+          {/* Mode Settings */}
           <div className="hidden sm:flex items-center gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
-              <button className="active">Timed (60s)</button>
-              <button>Passage</button>
+              <label>
+                <input type="radio" name="mode" value='timed' />
+                Timed (60s)
+              </label>
+              <label>
+                <input type="radio" name="mode" value='passage' />
+                Passage
+              </label>
             </div>
           </div>
 

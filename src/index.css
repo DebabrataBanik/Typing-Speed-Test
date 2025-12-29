@@ -38,17 +38,18 @@
   main{
     @apply my-8 sm:my-10 xl:my-16;
   }
-  button{
-    @apply px-2.5 py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] cursor-pointer transition-all duration-300 outline-offset-2 outline-blue-600;
-    
+
+  label{
+    @apply px-2.5 py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] cursor-pointer transition-all duration-300 hover:border-blue-600 hover:text-blue-600 active:outline-2 active:outline-offset-2 active:outline-blue-600;
   }
-  button:hover{
+  [type='radio']{
+    display: none;
+  }
+  label:has([type='radio']:checked) {
     @apply border-blue-600 text-blue-600;
   }
-  button:active{
-    @apply outline-2 outline-offset-2 outline-blue-600;
-  }
   
+
   select{
     @apply px-2.5 w-full py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] justify-center items-center cursor-pointer;
   }
@@ -87,7 +88,7 @@
   }
 
   footer{
-    @apply mt-8 flex justify-center;
+    @apply pt-8 flex justify-center border-t border-neutral-700;
   }
   
 }
@@ -112,13 +113,15 @@
   option:checked .checkbox{
     border: 5px solid var(--color-blue-400);
   }
-
-  .active{
-    @apply border-blue-600 text-blue-600;
-  }
   
-  .restart-btn{
-    @apply flex items-center gap-2.5 rounded-xl bg-neutral-800 border-none px-4 py-2.5 text-xl font-semibold leading-[1.2] -tracking-[0.3px] hover:text-neutral-0 active:outline-none; 
+  .text{
+    @apply text-2xl font-semibold text-neutral-400;
   }
+
+  .restart-btn{
+    @apply flex items-center gap-2.5 rounded-xl bg-neutral-800 border-none px-4 py-2.5 text-xl font-semibold leading-[1.2] -tracking-[0.3px] cursor-pointer; 
+  }
+
+
 }
 
