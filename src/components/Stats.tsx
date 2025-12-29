@@ -1,6 +1,23 @@
 import ArrowDown from "../assets/images/icon-down-arrow.svg"
+import type { Difficulty, Mode } from "../types/project";
 
-const Stats = () => {
+interface StatsProps{
+  difficulty: Difficulty;
+  setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
+  mode: Mode;
+  setMode: React.Dispatch<React.SetStateAction<Mode>>
+}
+
+const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
+
+  function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement>){
+    setDifficulty(e.target.value as Difficulty)
+  }
+
+  function handleModeChange(e: React.ChangeEvent<HTMLInputElement>){
+    setMode(e.target.value as Mode)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col xl:grid grid-cols-12 gap-8">
@@ -26,15 +43,32 @@ const Stats = () => {
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
               <label>
-                <input type="radio" name="difficulty" value='easy' />
+                <input 
+                  onChange={handleDifficultyChange} type="radio" 
+                  name="difficulty" 
+                  value='easy' 
+                  checked={difficulty === 'easy'}
+                />
                 Easy
               </label>
               <label>
-                <input type="radio" name="difficulty" value='medium' />
+                <input 
+                  onChange={handleDifficultyChange} 
+                  type="radio" 
+                  name="difficulty" 
+                  value='medium'
+                  checked={difficulty === 'medium'}
+                />
                 Medium
               </label>
               <label>
-                <input type="radio" name="difficulty" value='hard' />
+                <input 
+                  onChange={handleDifficultyChange} 
+                  type="radio" 
+                  name="difficulty" 
+                  value='hard'
+                  checked={difficulty === 'hard'}
+                />
                 Hard
               </label>
             </div> 
@@ -71,11 +105,23 @@ const Stats = () => {
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
               <label>
-                <input type="radio" name="mode" value='timed' />
+                <input 
+                  onChange={handleModeChange}
+                  type="radio" 
+                  name="mode" 
+                  value='timed'
+                  checked={mode === 'timed'}
+                />
                 Timed (60s)
               </label>
               <label>
-                <input type="radio" name="mode" value='passage' />
+                <input
+                  onChange={handleModeChange} 
+                  type="radio" 
+                  name="mode" 
+                  value='passage'
+                  checked={mode === 'passage'}
+                />
                 Passage
               </label>
             </div>
