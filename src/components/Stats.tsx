@@ -10,11 +10,11 @@ interface StatsProps{
 
 const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
 
-  function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement>){
+  function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
     setDifficulty(e.target.value as Difficulty)
   }
 
-  function handleModeChange(e: React.ChangeEvent<HTMLInputElement>){
+  function handleModeChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
     setMode(e.target.value as Mode)
   }
 
@@ -75,7 +75,11 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select name="difficulty">
+            <select 
+              name="difficulty"
+              value={difficulty}
+              onChange={handleDifficultyChange}
+            >
               <button>
                 <selectedcontent></selectedcontent>
                 <span>
@@ -128,7 +132,11 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select name="mode">
+            <select 
+              name="mode"
+              value={mode}
+              onChange={handleModeChange}
+            >
               <button>
                 <selectedcontent></selectedcontent>
                 <span>
