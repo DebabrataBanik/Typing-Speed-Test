@@ -30,10 +30,10 @@
 
 @layer base{
   body{
-    @apply font-sora bg-neutral-900 text-neutral-0;
+    @apply relative min-h-screen font-sora bg-neutral-900 text-neutral-0;
   }
   header{
-    @apply flex items-center justify-between mt-4 sm:mt-8 ;
+    @apply flex items-center justify-between pt-4 sm:pt-8 ;
   }
   main{
     @apply my-8 sm:my-10 xl:my-16;
@@ -48,7 +48,6 @@
   label:has([type='radio']:checked) {
     @apply border-blue-600 text-blue-600;
   }
-  
 
   select{
     @apply px-2.5 w-full py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] justify-center items-center cursor-pointer;
@@ -88,14 +87,14 @@
   }
 
   footer{
-    @apply pt-8 flex justify-center border-t border-neutral-700;
+    @apply w-full pt-8 flex justify-center border-t border-neutral-700;
   }
   
 }
 
 @layer components{
   .wrapper{
-    @apply mx-auto max-w-[1216px] px-4 sm:px-8 xl:px-0;
+    @apply relative min-h-screen mx-auto max-w-[1216px] px-4 sm:px-8 xl:px-0;
   }
   .stats_label{
     @apply text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400 flex items-center flex-col sm:flex-row gap-2 sm:gap-3;
@@ -114,14 +113,16 @@
     border: 5px solid var(--color-blue-400);
   }
   
+  .text-wrapper{
+    @apply line-clamp-6 sm:line-clamp-5 min-h-[260px];
+  }
+
   .text{
-    @apply text-2xl font-semibold text-neutral-400;
+    @apply text-[32px] sm:text-[40px] leading-[1.36] tracking-[0.4px] text-neutral-400;
   }
 
   .restart-btn{
     @apply flex items-center gap-2.5 rounded-xl bg-neutral-800 border-none px-4 py-2.5 text-xl font-semibold leading-[1.2] -tracking-[0.3px] cursor-pointer; 
   }
-
-
 }
 
