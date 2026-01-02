@@ -10,7 +10,7 @@ interface MainProps{
 
 const Main = ({mode, setMode}: MainProps ) => {
 
-  const [difficulty, setDifficulty] = useState<Difficulty>('hard')
+  const [difficulty, setDifficulty] = useState<Difficulty>('easy')
 
   return (
     <main className="flex flex-col gap-8">
