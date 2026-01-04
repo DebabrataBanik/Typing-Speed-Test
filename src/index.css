@@ -132,7 +132,7 @@
 
 @layer utilities{
   .active{
-    @apply rounded-sm bg-neutral-0/20;
+    @apply rounded-sm bg-neutral-0/20 animate-pulse;
   }
   .correct{
     @apply text-green-500;

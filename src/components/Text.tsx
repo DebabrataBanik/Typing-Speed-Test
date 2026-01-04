@@ -66,18 +66,22 @@ const Text = ({difficulty}: TextProps) => {
         } */}
         {/* this represents all chars separate */}
         {
-          charArr.map((char, index) => (
-            <span 
-              key={`${char}-${index}`}
-              className={
-                currentIdx === index ? 'active' : 
-                currentIdx > index && charArr[index] === userInputs[index] ? 'correct' : 
-                currentIdx > index && charArr[index] != userInputs[index] ? 'incorrect' : ''
-              }
-            >
-              {char}
-            </span>
-          ))
+          charArr.map((char, index) => {
+            const isCurrent = currentIdx === index;
+            const isCorrect = userInputs[index] === charArr[index] 
+
+            return (
+              <span 
+                key={`${char}-${index}`}
+                className={`
+                  ${isCurrent ? 'active' : ''}
+                  ${currentIdx > index && isCorrect ? 'correct' : ''}
+                  ${currentIdx > index && !isCorrect ? 'incorrect' : ''}
+                `}
+              >
+                {char}
+              </span>
+          )})
         }
       </p>
     </section>
