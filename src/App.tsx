@@ -7,12 +7,15 @@ import { useState } from "react"
 const App = () => {
 
   const [mode, setMode] = useState<Mode>('timed')
+  const [isStarted, setIsStarted] = useState(false);
 
   return (
     <div className="wrapper">
       <Header />
       <Main mode={mode} setMode={setMode} />
-      <Footer />
+      {
+        isStarted && <Footer />
+      }
     </div>
   )
 }

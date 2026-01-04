@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useEffect, useState } from 'react';
 import type { Difficulty, TextItem } from '../types/project'
 import { getTextContent } from '../util/difficulty-text-map';
+import Overlay from './Overlay';
 
 interface TextProps{
   difficulty: Difficulty;
@@ -11,8 +12,11 @@ const Text = ({difficulty}: TextProps) => {
   const [passage, setPassage] = useState<TextItem>(() => getTextContent(difficulty));
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userInputs, setUserInputs] = useState<string[]>([]);
+  const [isStarted, setIsStarted] = useState(false)
 
   useEffect(() => {
+    setCurrentIdx(0)
+    setUserInputs([])
     setPassage(getTextContent(difficulty));
   }, [difficulty])
 
@@ -23,7 +27,8 @@ const Text = ({difficulty}: TextProps) => {
       return
     }
     if(e.key.length !== 1) return
-
+    
+    setIsStarted(true)
     setUserInputs(prev => [...prev, e.key])
     setCurrentIdx(prev => prev + 1)
   }, [])
@@ -46,44 +51,32 @@ const Text = ({difficulty}: TextProps) => {
   // const words = passage.text.split(' ');
   return (
     <section className='text-wrapper'>
-      <p className='text'>
-        {/* this keeps the words intact */}
-        {/* {
-          words.map((word, wordIndex) => (
-            <span key={`${word}-${wordIndex}`}>
-              {
-                word.split('').map((char, charIndex) => (
-                  <span key={`${word}-${charIndex}`}>
-                    {char}
-                  </span>
-                ))
-              }
-              {
-                <span> </span>
-              }
-            </span>
-          ))
-        } */}
-        {/* this represents all chars separate */}
-        {
-          charArr.map((char, index) => {
-            const isCurrent = currentIdx === index;
-            const isCorrect = userInputs[index] === charArr[index] 
+      <div className={!isStarted ? 'layer' : ''}>
+        <p className='text'>
+          {/* this represents all chars separate */}
+          {
+            charArr.map((char, index) => {
+              const isCurrent = currentIdx === index;
+              const isCorrect = userInputs[index] === charArr[index] 
 
-            return (
-              <span 
-                key={`${char}-${index}`}
-                className={`
-                  ${isCurrent ? 'active' : ''}
-                  ${currentIdx > index && isCorrect ? 'correct' : ''}
-                  ${currentIdx > index && !isCorrect ? 'incorrect' : ''}
-                `}
-              >
-                {char}
-              </span>
-          )})
-        }
-      </p>
+              return (
+                <span 
+                  key={`${char}-${index}`}
+                  className={`
+                    ${isCurrent ? 'active' : ''}
+                    ${currentIdx > index && isCorrect ? 'correct' : ''}
+                    ${currentIdx > index && !isCorrect ? 'incorrect' : ''}
+                  `}
+                >
+                  {char}
+                </span>
+            )})
+          }
+        </p>
+      </div>
+      {
+        !isStarted && <Overlay setIsStarted={setIsStarted} />
+      }
     </section>
   )
 }

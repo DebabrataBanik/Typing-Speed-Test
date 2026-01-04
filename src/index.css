@@ -116,6 +116,9 @@
   .text-wrapper{
     @apply max-h-[340px] sm:max-h-[330px] min-h-[260px] overflow-hidden;
   }
+  .layer{
+    @apply blur-xs;
+  }
 
   .text{
     @apply text-[32px] sm:text-[40px] leading-[1.36] tracking-[0.4px] text-neutral-400;
@@ -126,6 +129,17 @@
 
     & img{
       @apply w-[17px] h-[17px]; 
+    }
+  }
+
+  .overlay{
+    @apply absolute top-1/2 left-1/2 -translate-1/2 flex flex-col items-center gap-2.5;
+
+    button{
+      @apply font-semibold leading-[1.2] -tracking-[0.3px] text-neutral-0 rounded-xl bg-blue-600 hover:bg-blue-400 px-6 py-4 cursor-pointer transition-all duration-300;
+    }
+    p{
+      @apply font-semibold leading-[1.2] -tracking-[0.3px] text-neutral-0;
     }
   }
 }
