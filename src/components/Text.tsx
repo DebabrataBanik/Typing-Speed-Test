@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useEffect, useState } from 'react';
 import type { Difficulty, TextItem } from '../types/project'
 import { getTextContent } from '../util/difficulty-text-map';
 
@@ -35,9 +35,13 @@ const Text = ({difficulty}: TextProps) => {
     }
   }, [handleKeyDown])
 
-  console.log(userInputs)
+  // console.log(userInputs)
+  // console.log(currentIdx)
 
-  const charArr = passage.text.split('')
+  const charArr = useMemo(() => 
+    passage.text.split('').map(char => char === '—' ? '-' : char)
+    ,[passage]
+  ) 
 
   // const words = passage.text.split(' ');
   return (
