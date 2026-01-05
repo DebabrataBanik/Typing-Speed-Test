@@ -1,8 +1,9 @@
-interface OverlayProps{
-  setIsStarted: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { useStore } from "../store/useStore"
 
-const Overlay = ({setIsStarted}: OverlayProps) => {
+const Overlay = () => {
+
+  const { setIsStarted } = useStore()
+
   return (
     <div className="overlay">
       <button onClick={() => setIsStarted(true)}>Start Typing Test</button>

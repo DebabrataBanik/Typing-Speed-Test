@@ -2,6 +2,7 @@ import { useCallback, useMemo, useEffect, useState } from 'react';
 import type { Difficulty, TextItem } from '../types/project'
 import { getTextContent } from '../util/difficulty-text-map';
 import Overlay from './Overlay';
+import { useStore } from '../store/useStore';
 
 interface TextProps{
   difficulty: Difficulty;
@@ -12,7 +13,7 @@ const Text = ({difficulty}: TextProps) => {
   const [passage, setPassage] = useState<TextItem>(() => getTextContent(difficulty));
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userInputs, setUserInputs] = useState<string[]>([]);
-  const [isStarted, setIsStarted] = useState(false)
+  const { isStarted, setIsStarted } = useStore();
 
   useEffect(() => {
     setCurrentIdx(0)
@@ -20,6 +21,7 @@ const Text = ({difficulty}: TextProps) => {
     setPassage(getTextContent(difficulty));
   }, [difficulty])
 
+  // useCallback ensures referential stability for its cleanup
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if(e.key === 'Backspace'){
       setCurrentIdx(prev => prev > 0 ? prev-1 : prev)
@@ -31,7 +33,7 @@ const Text = ({difficulty}: TextProps) => {
     setIsStarted(true)
     setUserInputs(prev => [...prev, e.key])
     setCurrentIdx(prev => prev + 1)
-  }, [])
+  }, [setIsStarted])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
@@ -75,7 +77,7 @@ const Text = ({difficulty}: TextProps) => {
         </p>
       </div>
       {
-        !isStarted && <Overlay setIsStarted={setIsStarted} />
+        !isStarted && <Overlay />
       }
     </section>
   )

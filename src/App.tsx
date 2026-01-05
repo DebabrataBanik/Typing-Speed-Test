@@ -3,11 +3,12 @@ import Main from "./components/Main"
 import Footer from "./components/Footer"
 import type { Mode } from "./types/project"
 import { useState } from "react"
+import { useStore } from "./store/useStore"
 
 const App = () => {
 
   const [mode, setMode] = useState<Mode>('timed')
-  const [isStarted, setIsStarted] = useState(false);
+  const { isStarted } = useStore();
 
   return (
     <div className="wrapper">
