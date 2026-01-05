@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useState } from 'react';
+import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import type { Difficulty, TextItem } from '../types/project'
 import { getTextContent } from '../util/difficulty-text-map';
 import Overlay from './Overlay';
@@ -14,6 +14,7 @@ const Text = ({difficulty}: TextProps) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userInputs, setUserInputs] = useState<string[]>([]);
   const { isStarted, setIsStarted } = useStore();
+  const charRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     setCurrentIdx(0)
@@ -21,11 +22,21 @@ const Text = ({difficulty}: TextProps) => {
     setPassage(getTextContent(difficulty));
   }, [difficulty])
 
+  const scrollIntoView = useCallback(() => {
+    if(charRef.current){
+      charRef.current.scrollIntoView({
+        behavior: 'smooth'
+      })
+      charRef.current.focus();
+    }
+  }, [])
+
   // useCallback ensures referential stability for its cleanup
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if(e.key === 'Backspace'){
       setCurrentIdx(prev => prev > 0 ? prev-1 : prev)
       setUserInputs(prev => prev.slice(0, -1))
+      scrollIntoView()
       return
     }
     if(e.key.length !== 1) return
@@ -33,7 +44,8 @@ const Text = ({difficulty}: TextProps) => {
     setIsStarted(true)
     setUserInputs(prev => [...prev, e.key])
     setCurrentIdx(prev => prev + 1)
-  }, [setIsStarted])
+    scrollIntoView()
+  }, [setIsStarted, scrollIntoView])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
@@ -64,6 +76,7 @@ const Text = ({difficulty}: TextProps) => {
               return (
                 <span 
                   key={`${char}-${index}`}
+                  ref={index === currentIdx ? charRef : null}
                   className={`
                     ${isCurrent ? 'active' : ''}
                     ${currentIdx > index && isCorrect ? 'correct' : ''}
