@@ -1,5 +1,7 @@
+import { useState } from "react";
 import ArrowDown from "../assets/images/icon-down-arrow.svg"
 import type { Difficulty, Mode } from "../types/project";
+import { useStore } from "../store/useStore";
 
 interface StatsProps{
   difficulty: Difficulty;
@@ -9,6 +11,7 @@ interface StatsProps{
 }
 
 const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
+  const { isStarted } = useStore();
 
   function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
     setDifficulty(e.target.value as Difficulty)
@@ -42,32 +45,44 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           <div className="hidden sm:flex items-center justify-between gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
-              <label>
+              <label
+                className={isStarted ? 'cursor-not-allowed' : ''} 
+                tabIndex={0}
+              >
                 <input 
                   onChange={handleDifficultyChange} type="radio" 
                   name="difficulty" 
                   value='easy' 
                   checked={difficulty === 'easy'}
+                  disabled={isStarted}
                 />
                 Easy
               </label>
-              <label>
+              <label
+                className={isStarted ? 'cursor-not-allowed' : ''}
+                tabIndex={0}
+              >
                 <input 
                   onChange={handleDifficultyChange} 
                   type="radio" 
                   name="difficulty" 
                   value='medium'
                   checked={difficulty === 'medium'}
+                  disabled={isStarted}
                 />
                 Medium
               </label>
-              <label>
+              <label
+                className={isStarted ? 'cursor-not-allowed' : ''}
+                tabIndex={0}
+              >
                 <input 
                   onChange={handleDifficultyChange} 
                   type="radio" 
                   name="difficulty" 
                   value='hard'
                   checked={difficulty === 'hard'}
+                  disabled={isStarted}
                 />
                 Hard
               </label>
@@ -79,6 +94,8 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
               name="difficulty"
               value={difficulty}
               onChange={handleDifficultyChange}
+              disabled={isStarted}
+              tabIndex={0}
             >
               <button>
                 <selectedcontent></selectedcontent>
@@ -108,23 +125,31 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           <div className="hidden sm:flex items-center gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
-              <label>
+              <label
+                className={isStarted ? 'cursor-not-allowed' : ''}
+                tabIndex={0}
+              >
                 <input 
                   onChange={handleModeChange}
                   type="radio" 
                   name="mode" 
                   value='timed'
                   checked={mode === 'timed'}
+                  disabled={isStarted}
                 />
                 Timed (60s)
               </label>
-              <label>
+              <label
+                className={isStarted ? 'cursor-not-allowed' : ''}
+                tabIndex={0}
+              >
                 <input
                   onChange={handleModeChange} 
                   type="radio" 
                   name="mode" 
                   value='passage'
                   checked={mode === 'passage'}
+                  disabled={isStarted}
                 />
                 Passage
               </label>
@@ -136,6 +161,8 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
               name="mode"
               value={mode}
               onChange={handleModeChange}
+              disabled={isStarted}
+              tabIndex={0}
             >
               <button>
                 <selectedcontent></selectedcontent>

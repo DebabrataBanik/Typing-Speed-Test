@@ -15,12 +15,22 @@ const Text = ({difficulty}: TextProps) => {
   const [userInputs, setUserInputs] = useState<string[]>([]);
   const { isStarted, setIsStarted } = useStore();
   const charRef = useRef<HTMLSpanElement | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    setCurrentIdx(0)
-    setUserInputs([])
     setPassage(getTextContent(difficulty));
   }, [difficulty])
+  
+  useEffect(() => {
+    if(isStarted && containerRef.current){
+      containerRef.current.focus()
+    }
+
+    if(!isStarted){
+      setCurrentIdx(0)
+      setUserInputs([])
+    }
+  }, [isStarted])
 
   const scrollIntoView = useCallback(() => {
     if(charRef.current){
@@ -33,6 +43,10 @@ const Text = ({difficulty}: TextProps) => {
 
   // useCallback ensures referential stability for its cleanup
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.ctrlKey || e.altKey || e.metaKey) {
+      return; 
+    }
+    
     if(e.key === 'Backspace'){
       setCurrentIdx(prev => prev > 0 ? prev-1 : prev)
       setUserInputs(prev => prev.slice(0, -1))
@@ -48,14 +62,17 @@ const Text = ({difficulty}: TextProps) => {
   }, [setIsStarted, scrollIntoView])
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
+    const textContainer = containerRef.current;
+
+    if(textContainer){
+      textContainer.addEventListener('keydown', handleKeyDown)
+    }
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
+      if(textContainer){
+        textContainer.removeEventListener('keydown', handleKeyDown)
+      }
     }
   }, [handleKeyDown])
-
-  // console.log(userInputs)
-  // console.log(currentIdx)
 
   const charArr = useMemo(() => 
     passage.text.split('').map(char => char === '—' ? '-' : char)
@@ -64,8 +81,15 @@ const Text = ({difficulty}: TextProps) => {
 
   // const words = passage.text.split(' ');
   return (
-    <section className='text-wrapper'>
-      <div className={!isStarted ? 'layer' : ''}>
+    <section 
+      ref={containerRef}
+      tabIndex={-1}
+      className='text-wrapper'
+    >
+      <div 
+        className={!isStarted ? 'layer cursor-default' : ''}
+        onClick={() => setIsStarted(true)}
+      >
         <p className='text'>
           {/* this represents all chars separate */}
           {
