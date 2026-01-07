@@ -4,19 +4,19 @@ import Footer from "./components/Footer"
 import type { Mode } from "./types/project"
 import { useState } from "react"
 import { useStore } from "./store/useStore"
+import Achievement from "./components/ResultsPage"
 
 const App = () => {
 
   const [mode, setMode] = useState<Mode>('timed')
-  const { isStarted } = useStore();
+  const { isStarted, testCompleted } = useStore();
 
   return (
     <div className="wrapper">
       <Header />
-      <Main mode={mode} setMode={setMode} />
-      {
-        isStarted && <Footer />
-      }
+      { !testCompleted && <Main mode={mode} setMode={setMode} /> }
+      { !testCompleted && isStarted && <Footer /> }
+      { testCompleted && <Achievement /> }
     </div>
   )
 }

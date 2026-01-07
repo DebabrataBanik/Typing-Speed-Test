@@ -2,6 +2,7 @@ import Stats from "./Stats"
 import Text from "./Text"
 import { useState } from "react"
 import type { Difficulty, Mode } from "../types/project"
+import { useStore } from "../store/useStore";
 
 interface MainProps{
   mode: Mode;
@@ -10,7 +11,8 @@ interface MainProps{
 
 const Main = ({mode, setMode}: MainProps ) => {
 
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy')
+  const { level } = useStore();
+  const [difficulty, setDifficulty] = useState<Difficulty>(level as Difficulty);
 
   return (
     <main className="flex flex-col gap-8">

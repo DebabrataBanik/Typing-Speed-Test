@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ArrowDown from "../assets/images/icon-down-arrow.svg"
 import type { Difficulty, Mode } from "../types/project";
 import { useStore } from "../store/useStore";
+import { formatTimer } from "../util/format-timer";
 
 interface StatsProps{
   difficulty: Difficulty;
@@ -11,10 +12,34 @@ interface StatsProps{
 }
 
 const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
-  const { isStarted } = useStore();
+  const { isStarted, setIsStarted, setTestCompleted, setLevel } = useStore();
+  const [timer, setTimer] = useState(60);
+  
+  useEffect(() => {
+    if(!isStarted) return
+    
+    const timerId = setInterval(() => {
+      setTimer(prev => {
+        if(prev <= 1){
+          clearInterval(timerId)
+          setIsStarted(false)
+          setTestCompleted(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    
+    return () => clearInterval(timerId);
+  }, [isStarted])
+  
+  useEffect(() => {
+    if(!isStarted) setTimer(60);
+  }, [isStarted])
 
   function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
     setDifficulty(e.target.value as Difficulty)
+    setLevel(e.target.value as Difficulty)
   }
 
   function handleModeChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
@@ -35,7 +60,7 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           </div>
           <span className="stats_bar"></span>
           <div className="stats_label">
-            Time: <span className="stats text-yellow-400">0:46</span>
+            Time: <span className="stats text-yellow-400">{formatTimer(timer)}</span>
           </div>
         </div>
         

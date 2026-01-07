@@ -13,9 +13,15 @@ const Text = ({difficulty}: TextProps) => {
   const [passage, setPassage] = useState<TextItem>(() => getTextContent(difficulty));
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userInputs, setUserInputs] = useState<string[]>([]);
-  const { isStarted, setIsStarted } = useStore();
+  const { isStarted, setIsStarted, setTestCompleted } = useStore();
   const charRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLElement | null>(null);
+
+  const charArr = useMemo(() => 
+    passage.text.split('').map(char => char === '—' ? '-' : char)
+    ,[passage]
+  )
+  const charLength = charArr.length;
 
   useEffect(() => {
     setPassage(getTextContent(difficulty));
@@ -57,9 +63,14 @@ const Text = ({difficulty}: TextProps) => {
     
     setIsStarted(true)
     setUserInputs(prev => [...prev, e.key])
-    setCurrentIdx(prev => prev + 1)
+    setCurrentIdx(prev => {
+      if(prev+1 >= charLength){
+        setTestCompleted(true)
+      }
+      return prev+1
+    })
     scrollIntoView()
-  }, [setIsStarted, scrollIntoView])
+  }, [scrollIntoView, charLength])
 
   useEffect(() => {
     const textContainer = containerRef.current;
@@ -73,11 +84,6 @@ const Text = ({difficulty}: TextProps) => {
       }
     }
   }, [handleKeyDown])
-
-  const charArr = useMemo(() => 
-    passage.text.split('').map(char => char === '—' ? '-' : char)
-    ,[passage]
-  ) 
 
   // const words = passage.text.split(' ');
   return (
