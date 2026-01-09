@@ -4,41 +4,43 @@ import type { Difficulty, Mode } from "../types/project";
 import { useStore } from "../store/useStore";
 import { formatTimer } from "../util/format-timer";
 
-interface StatsProps{
-  difficulty: Difficulty;
-  setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
-  mode: Mode;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>
-}
-
-const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
-  const { isStarted, setIsStarted, setTestCompleted, setLevel } = useStore();
+const Stats = () => {
+  const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode } = useStore();
   const [timer, setTimer] = useState(60);
-  
+
+  useEffect(() => {
+    if(!isStarted) setTimer(mode === 'timed' ? 60 : 0);
+  }, [isStarted, mode])
+
+
   useEffect(() => {
     if(!isStarted) return
     
     const timerId = setInterval(() => {
       setTimer(prev => {
-        if(prev <= 1){
-          clearInterval(timerId)
-          setIsStarted(false)
-          setTestCompleted(true)
-          return 0
+        if(mode === 'timed'){
+          if(prev <= 1) return 0
+          return prev - 1;
+        } else {
+          return prev + 1;
         }
-        return prev - 1
       })
     }, 1000)
     
     return () => clearInterval(timerId);
-  }, [isStarted])
+  }, [isStarted, mode])
+
+  console.log(mode)
   
   useEffect(() => {
-    if(!isStarted) setTimer(60);
-  }, [isStarted])
+    if (mode === 'timed' && timer === 0 && isStarted) {
+      setIsStarted(false)
+      setTestCompleted(true)
+    }
+  }, [timer, mode, isStarted])
+  
 
   function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
-    setDifficulty(e.target.value as Difficulty)
     setLevel(e.target.value as Difficulty)
   }
 
@@ -78,7 +80,7 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
                   onChange={handleDifficultyChange} type="radio" 
                   name="difficulty" 
                   value='easy' 
-                  checked={difficulty === 'easy'}
+                  checked={level === 'easy'}
                   disabled={isStarted}
                 />
                 Easy
@@ -92,7 +94,7 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
                   type="radio" 
                   name="difficulty" 
                   value='medium'
-                  checked={difficulty === 'medium'}
+                  checked={level === 'medium'}
                   disabled={isStarted}
                 />
                 Medium
@@ -106,7 +108,7 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
                   type="radio" 
                   name="difficulty" 
                   value='hard'
-                  checked={difficulty === 'hard'}
+                  checked={level === 'hard'}
                   disabled={isStarted}
                 />
                 Hard
@@ -117,7 +119,7 @@ const Stats = ({difficulty, setDifficulty, mode, setMode}: StatsProps) => {
           <div className="sm:hidden flex-1 flex justify-center">
             <select 
               name="difficulty"
-              value={difficulty}
+              value={level}
               onChange={handleDifficultyChange}
               disabled={isStarted}
               tabIndex={0}
