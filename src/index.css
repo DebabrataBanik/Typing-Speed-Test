@@ -133,7 +133,7 @@
   }
 
   .overlay{
-    @apply absolute top-1/2 left-1/2 -translate-1/2 flex flex-col items-center gap-2.5;
+    @apply absolute top-1/2 left-1/2 -translate-1/2 flex flex-col items-center gap-2.5 w-max;
 
     button{
       @apply font-semibold leading-[1.2] -tracking-[0.3px] text-neutral-0 rounded-xl bg-blue-600 hover:bg-blue-400 px-6 py-4 cursor-pointer transition-all duration-300 focus:outline-blue-600 focus:outline-offset-4;
@@ -160,7 +160,7 @@
   .results-subtext{
     @apply sm:text-xl leading-[1.2] -tracking-[0.48px] sm:-tracking-[0.6px] text-neutral-400 text-center;
   }
-  .completed-icon{
-    @apply rounded-full shadow-[0_0_0_16px_hsla(140, 63%, 57%, 0.2), 0_0_0_32px_hsla(140, 63%, 57%, 0.1)];
-  }
+  .completed-icon {
+    @apply rounded-full shadow-[0_0_0_16px_hsla(140,_63%,_57%,_0.2),_0_0_0_32px_hsla(140,_63%,_57%,_0.1)];
+  }  
 }

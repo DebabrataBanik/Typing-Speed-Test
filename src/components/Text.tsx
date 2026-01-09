@@ -1,19 +1,16 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import type { Difficulty, TextItem } from '../types/project'
+import type { TextItem } from '../types/project'
 import { getTextContent } from '../util/difficulty-text-map';
 import Overlay from './Overlay';
 import { useStore } from '../store/useStore';
 
-interface TextProps{
-  difficulty: Difficulty;
-}
 
-const Text = ({difficulty}: TextProps) => {
+const Text = () => {
 
-  const [passage, setPassage] = useState<TextItem>(() => getTextContent(difficulty));
+  const { isStarted, setIsStarted, setTestCompleted, level } = useStore();
+  const [passage, setPassage] = useState<TextItem>(() => getTextContent(level));
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userInputs, setUserInputs] = useState<string[]>([]);
-  const { isStarted, setIsStarted, setTestCompleted } = useStore();
   const charRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLElement | null>(null);
 
@@ -24,8 +21,8 @@ const Text = ({difficulty}: TextProps) => {
   const charLength = charArr.length;
 
   useEffect(() => {
-    setPassage(getTextContent(difficulty));
-  }, [difficulty])
+    setPassage(getTextContent(level));
+  }, [level])
   
   useEffect(() => {
     if(isStarted && containerRef.current){
