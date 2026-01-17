@@ -29,8 +29,6 @@ const Stats = () => {
     
     return () => clearInterval(timerId);
   }, [isStarted, mode])
-
-  console.log(mode)
   
   useEffect(() => {
     if (mode === 'timed' && timer === 0 && isStarted) {
