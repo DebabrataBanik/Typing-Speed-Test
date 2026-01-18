@@ -118,15 +118,19 @@ const Text = () => {
               const isWordCompleted = wordIdx < currentWordIdx
               const isWordCorrect = userWord === word
               const isWordIncorrect = isWordCompleted && !isWordCorrect
+              const wordTyped = wordIdx === currentWordIdx && userWord.length >= word.length
 
               return (
                 <div
                   key={wordIdx}
-                  className={`word ${isWordIncorrect ? 'incorrect_word' : ''}`}
+                  className={`word 
+                    ${wordTyped ? 'bar' : ''}
+                    ${isWordIncorrect ? 'incorrect_word' : ''}`}
                 >
                   {
                     word.split('').map((char, charIdx) => {
                       const activeChar = currentWordIdx === wordIdx && charIdx === userWord.length
+
                       const userChar = userWord[charIdx]
 
                       const isCorrect = userChar === char
