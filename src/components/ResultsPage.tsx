@@ -1,8 +1,10 @@
 import { useStore } from "../store/useStore"
 import Completed from '../assets/images/icon-completed.svg'
-import Confetti from '../assets/images/icon-new-pb.svg'
+import Bouquet from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
 import { useEffect, useRef } from "react";
+import ReactConfetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 const Result = {
   baseline: {
@@ -20,7 +22,7 @@ const Result = {
   highScore: {
     heading: 'High Score Smashed!',
     text: 'You’re getting faster. That was incredible typing.',
-    imgSrc: Confetti,
+    imgSrc: Bouquet,
     btnText: 'Beat This Score',
   },
 } as const
@@ -31,6 +33,7 @@ const ResultsPage = () => {
   const { bestScore, setBestScore, setIsStarted, setTestCompleted, wpm, accuracy, setWpm, setAccuracy, correctChars, incorrectChars } = useStore();
   const prevBestScoreRef = useRef<number | null>(bestScore);
 
+  const { width, height } = useWindowSize()
 
   const handleRestart = () => {
     setTestCompleted(false)
@@ -60,37 +63,47 @@ const ResultsPage = () => {
 
 
   return (
-    <div className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8">
-      <img src={result.imgSrc} alt={`${result.imgSrc} icon`} className={`${resultType !== 'highScore' ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
-      <div className="flex flex-col items-center gap-2.5">
-        <h1 className="results-header">{result.heading}</h1>
-        <p className="results-subtext">{result.text}</p>
+    <div className="overflow-hidden">
+      {
+        resultType === "highScore" &&
+        <ReactConfetti
+          width={width}
+          height={height}
+        />
+      }
+
+      <div className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8">
+        <img src={result.imgSrc} alt={`${result.imgSrc} icon`} className={`${resultType !== 'highScore' ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
+        <div className="flex flex-col items-center gap-2.5">
+          <h1 className="results-header">{result.heading}</h1>
+          <p className="results-subtext">{result.text}</p>
+        </div>
+        <div className="flex flex-col w-full justify-center sm:flex-row items-center gap-5 sm:pt-5 pb-4 sm:pb-8">
+          <div className="stat_container">
+            <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">WPM</span>
+            <span className="text-2xl font-bold">{wpm}</span>
+          </div>
+          <div className="stat_container">
+            <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Accuracy</span>
+            <span className={`text-2xl font-bold ${accuracy === 100 ? 'text-green-500' : 'text-red-500'}`}>{accuracy}%</span>
+          </div>
+          <div className="stat_container">
+            <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Characters</span>
+            <span>
+              <span className="text-2xl font-bold text-green-500">{correctChars}</span>
+              <span className="text-2xl font-bold text-neutral-500">/</span>
+              <span className="text-2xl font-bold text-red-500">{incorrectChars}</span>
+            </span>
+          </div>
+        </div>
+        <button
+          onClick={handleRestart}
+          className="px-4 py-2.5 flex items-center gap-2.5 font-semibold text-lg leading-[1.2] -tracking-[0.3px] rounded-xl bg-neutral-0 text-neutral-900 cursor-pointer"
+        >
+          {result.btnText}
+          <img src={Restart} alt="restart icon" className="w-4 h-4" />
+        </button>
       </div>
-      <div className="flex flex-col w-full justify-center sm:flex-row items-center gap-5 sm:pt-5 pb-4 sm:pb-8">
-        <div className="stat_container">
-          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">WPM</span>
-          <span className="text-2xl font-bold">{wpm}</span>
-        </div>
-        <div className="stat_container">
-          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Accuracy</span>
-          <span className={`text-2xl font-bold ${accuracy === 100 ? 'text-green-500' : 'text-red-500'}`}>{accuracy}%</span>
-        </div>
-        <div className="stat_container">
-          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Characters</span>
-          <span>
-            <span className="text-2xl font-bold text-green-500">{correctChars}</span>
-            <span className="text-2xl font-bold text-neutral-500">/</span>
-            <span className="text-2xl font-bold text-red-500">{incorrectChars}</span>
-          </span>
-        </div>
-      </div>
-      <button
-        onClick={handleRestart}
-        className="px-4 py-2.5 flex items-center gap-2.5 font-semibold text-lg leading-[1.2] -tracking-[0.3px] rounded-xl bg-neutral-0 text-neutral-900 cursor-pointer"
-      >
-        {result.btnText}
-        <img src={Restart} alt="restart icon" className="w-4 h-4" />
-      </button>
     </div>
   )
 }

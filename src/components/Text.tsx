@@ -117,7 +117,10 @@ const Text = () => {
 
     const total = totalTypedCharsRef.current
     const errorCount = wrongCharsRef.current
-    const accuracy = total === 0 ? 100 : Math.round(((total - errorCount) / total) * 100)
+    const correct = Math.max(0, total - errorCount)
+    setCorrectChars(correct)
+    setIncorrectChars(errorCount)
+    const accuracy = total === 0 ? 100 : Math.round((correct / total) * 100)
     setAccuracy(accuracy)
 
     setTypedWord(words => {
