@@ -1,48 +1,47 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import ArrowDown from "../assets/images/icon-down-arrow.svg"
 import type { Difficulty, Mode } from "../types/project";
 import { useStore } from "../store/useStore";
 import { formatTimer } from "../util/format-timer";
 
 const Stats = () => {
-  const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode } = useStore();
-  const [timer, setTimer] = useState(60);
+  const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode, accuracy, wpm, timer, setTimer } = useStore();
 
   useEffect(() => {
-    if(!isStarted) setTimer(mode === 'timed' ? 60 : 0);
+    if (!isStarted) setTimer(mode === 'timed' ? 60 : 0);
   }, [isStarted, mode])
 
 
   useEffect(() => {
-    if(!isStarted) return
-    
+    if (!isStarted) return
+
     const timerId = setInterval(() => {
       setTimer(prev => {
-        if(mode === 'timed'){
-          if(prev <= 1) return 0
+        if (mode === 'timed') {
+          if (prev <= 1) return 0
           return prev - 1;
         } else {
           return prev + 1;
         }
       })
     }, 1000)
-    
+
     return () => clearInterval(timerId);
   }, [isStarted, mode])
-  
+
   useEffect(() => {
     if (mode === 'timed' && timer === 0 && isStarted) {
       setIsStarted(false)
       setTestCompleted(true)
     }
   }, [timer, mode, isStarted])
-  
 
-  function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
+
+  function handleDifficultyChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
     setLevel(e.target.value as Difficulty)
   }
 
-  function handleModeChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>){
+  function handleModeChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
     setMode(e.target.value as Mode)
   }
 
@@ -52,18 +51,18 @@ const Stats = () => {
         {/* Left Stats */}
         <div className="col-span-5 flex items-center justify-between sm:justify-start xl:justify-between gap-6">
           <div className="stats_label">
-            WPM: <span className="stats text-neutral-0">40</span>
+            WPM: <span className="stats text-neutral-0">{wpm}</span>
           </div>
           <span className="stats_bar"></span>
           <div className="stats_label">
-            Accuracy: <span className="stats text-red-500">94%</span>
+            Accuracy: <span className="stats text-red-500">{accuracy}%</span>
           </div>
           <span className="stats_bar"></span>
           <div className="stats_label">
             Time: <span className="stats text-yellow-400">{formatTimer(timer)}</span>
           </div>
         </div>
-        
+
         {/* Right Settings */}
         <div className="col-span-6 col-start-7 flex items-center gap-3.5">
           {/* Difficulty Settings */}
@@ -71,13 +70,13 @@ const Stats = () => {
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
               <label
-                className={isStarted ? 'cursor-not-allowed' : ''} 
+                className={isStarted ? 'cursor-not-allowed' : ''}
                 tabIndex={0}
               >
-                <input 
-                  onChange={handleDifficultyChange} type="radio" 
-                  name="difficulty" 
-                  value='easy' 
+                <input
+                  onChange={handleDifficultyChange} type="radio"
+                  name="difficulty"
+                  value='easy'
                   checked={level === 'easy'}
                   disabled={isStarted}
                 />
@@ -87,10 +86,10 @@ const Stats = () => {
                 className={isStarted ? 'cursor-not-allowed' : ''}
                 tabIndex={0}
               >
-                <input 
-                  onChange={handleDifficultyChange} 
-                  type="radio" 
-                  name="difficulty" 
+                <input
+                  onChange={handleDifficultyChange}
+                  type="radio"
+                  name="difficulty"
                   value='medium'
                   checked={level === 'medium'}
                   disabled={isStarted}
@@ -101,21 +100,21 @@ const Stats = () => {
                 className={isStarted ? 'cursor-not-allowed' : ''}
                 tabIndex={0}
               >
-                <input 
-                  onChange={handleDifficultyChange} 
-                  type="radio" 
-                  name="difficulty" 
+                <input
+                  onChange={handleDifficultyChange}
+                  type="radio"
+                  name="difficulty"
                   value='hard'
                   checked={level === 'hard'}
                   disabled={isStarted}
                 />
                 Hard
               </label>
-            </div> 
+            </div>
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select 
+            <select
               name="difficulty"
               value={level}
               onChange={handleDifficultyChange}
@@ -154,10 +153,10 @@ const Stats = () => {
                 className={isStarted ? 'cursor-not-allowed' : ''}
                 tabIndex={0}
               >
-                <input 
+                <input
                   onChange={handleModeChange}
-                  type="radio" 
-                  name="mode" 
+                  type="radio"
+                  name="mode"
                   value='timed'
                   checked={mode === 'timed'}
                   disabled={isStarted}
@@ -169,9 +168,9 @@ const Stats = () => {
                 tabIndex={0}
               >
                 <input
-                  onChange={handleModeChange} 
-                  type="radio" 
-                  name="mode" 
+                  onChange={handleModeChange}
+                  type="radio"
+                  name="mode"
                   value='passage'
                   checked={mode === 'passage'}
                   disabled={isStarted}
@@ -182,7 +181,7 @@ const Stats = () => {
           </div>
 
           <div className="sm:hidden flex-1 flex justify-center">
-            <select 
+            <select
               name="mode"
               value={mode}
               onChange={handleModeChange}
@@ -209,7 +208,7 @@ const Stats = () => {
         </div>
       </div>
 
-      <hr className="col-span-12 text-neutral-700"/>
+      <hr className="col-span-12 text-neutral-700" />
     </div>
   )
 }

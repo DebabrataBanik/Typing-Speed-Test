@@ -176,7 +176,7 @@
     @apply text-green-500;
   }
   .incorrect{
-    @apply text-red-500;
+    @apply text-red-500 underline underline-offset-4;
     display: inline-block;
     animation: shakeError 0.3s ease-in-out;
   }
@@ -217,13 +217,7 @@
     background-color: hsla(0, 0%, 100%, 0.2);
   }
 
-  .incorrect_word.word::after{
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 3px;
-    bottom: 2px;
-    left: 0;
-    background-color: var(--color-red-500);
+  .wrong.word{
+    @apply underline underline-offset-4 text-red-500;
   }
 }
