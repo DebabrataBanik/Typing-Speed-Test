@@ -1,34 +1,95 @@
 import { useStore } from "../store/useStore"
 import Completed from '../assets/images/icon-completed.svg'
+import Confetti from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
+import { useEffect, useRef } from "react";
+
+const Result = {
+  baseline: {
+    heading: 'Baseline Established!',
+    text: 'You’ve set the bar. Now the real challenge begins—time to beat it.',
+    imgSrc: Completed,
+    btnText: 'Beat This Score',
+  },
+  completed: {
+    heading: 'Test Completed!',
+    text: 'Solid run. Keep pushing to beat your high score.',
+    imgSrc: Completed,
+    btnText: 'Go Again',
+  },
+  highScore: {
+    heading: 'High Score Smashed!',
+    text: 'You’re getting faster. That was incredible typing.',
+    imgSrc: Confetti,
+    btnText: 'Beat This Score',
+  },
+} as const
+
 
 const ResultsPage = () => {
 
-  const { bestScore, setIsStarted, setTestCompleted } = useStore();
+  const { bestScore, setBestScore, setIsStarted, setTestCompleted, wpm, accuracy, setWpm, setAccuracy, correctChars, incorrectChars } = useStore();
+  const prevBestScoreRef = useRef<number | null>(bestScore);
+
 
   const handleRestart = () => {
     setTestCompleted(false)
     setIsStarted(false)
+    setAccuracy(100)
+    setWpm(0)
   }
 
+  useEffect(() => {
+    if (bestScore === null || wpm > bestScore) {
+      setBestScore(wpm)
+    }
+  }, [wpm])
+
+
+  let resultType: keyof typeof Result;
+
+  if (prevBestScoreRef.current === null) {
+    resultType = 'baseline';
+  } else if (wpm > prevBestScoreRef.current) {
+    resultType = 'highScore';
+  } else {
+    resultType = 'completed';
+  }
+
+  const result = Result[resultType];
+
+
   return (
-    <div className="mt-8 sm:mt-20 xl:mt-16 flex flex-col items-center gap-6 sm:gap-8">
-      <img src={Completed} alt="completed icon" className="completed-icon" />
+    <div className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8">
+      <img src={result.imgSrc} alt={`${result.imgSrc} icon`} className={`${resultType !== 'highScore' ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
       <div className="flex flex-col items-center gap-2.5">
-        <h1 className="results-header">Test Complete</h1>
-        <p className="results-subtext">Solid run. Keep pushing to beat your high score.</p>
+        <h1 className="results-header">{result.heading}</h1>
+        <p className="results-subtext">{result.text}</p>
       </div>
-      <div className="flex flex-col sm:flex-row items-center gap-5 sm:pt-5 pb-4 sm:pb-8">
-        <div>WPM </div>
-        <div>Accuracy </div>
-        <div>Characters</div>
+      <div className="flex flex-col w-full justify-center sm:flex-row items-center gap-5 sm:pt-5 pb-4 sm:pb-8">
+        <div className="stat_container">
+          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">WPM</span>
+          <span className="text-2xl font-bold">{wpm}</span>
+        </div>
+        <div className="stat_container">
+          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Accuracy</span>
+          <span className={`text-2xl font-bold ${accuracy === 100 ? 'text-green-500' : 'text-red-500'}`}>{accuracy}%</span>
+        </div>
+        <div className="stat_container">
+          <span className="text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400">Characters</span>
+          <span>
+            <span className="text-2xl font-bold text-green-500">{correctChars}</span>
+            <span className="text-2xl font-bold text-neutral-500">/</span>
+            <span className="text-2xl font-bold text-red-500">{incorrectChars}</span>
+          </span>
+        </div>
       </div>
       <button
-        onClick={handleRestart} 
+        onClick={handleRestart}
         className="px-4 py-2.5 flex items-center gap-2.5 font-semibold text-lg leading-[1.2] -tracking-[0.3px] rounded-xl bg-neutral-0 text-neutral-900 cursor-pointer"
       >
-        Go Again
-        <img src={Restart} alt="restart icon" className="w-4 h-4"/>
+        {result.btnText}
+        <img src={Restart} alt="restart icon" className="w-4 h-4" />
       </button>
     </div>
   )
