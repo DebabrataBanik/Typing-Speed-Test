@@ -10,6 +10,7 @@ const Text = () => {
   const [passage, setPassage] = useState<TextItem | null>(null)
   const [currentWordIdx, setCurrentWordIdx] = useState(0)
   const [typedWord, setTypedWord] = useState<string[]>([''])
+  const [inputText, setInputText] = useState('')
   const containerRef = useRef<HTMLElement | null>(null)
   const charRef = useRef<HTMLSpanElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -19,16 +20,13 @@ const Text = () => {
   const totalTypedCharsRef = useRef(0)
   const wrongCharsRef = useRef(0)
 
-  const isMobile = /Mobi|Android/i.test(navigator.userAgent)
-
-
   useEffect(() => {
     setPassage(() => getTextContent(level))
   }, [level])
 
   useEffect(() => {
-    if (isStarted && containerRef.current) {
-      containerRef.current.focus()
+    if (isStarted && inputRef.current) {
+      inputRef.current.focus()
 
       startTimeRef.current = Date.now()
     }
@@ -36,6 +34,7 @@ const Text = () => {
     if (!isStarted) {
       setCurrentWordIdx(0)
       setTypedWord([''])
+      setInputText('')
 
       startTimeRef.current = null
       totalTypedCharsRef.current = 0
@@ -50,89 +49,75 @@ const Text = () => {
       charRef.current.scrollIntoView({
         behavior: 'smooth'
       })
-      charRef.current.focus();
     }
   }, [])
 
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isStarted || !words) return
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!isStarted) return
+    const value = e.target.value
 
-    if (e.ctrlKey || e.altKey || e.metaKey) {
-      if (e.ctrlKey && e.key === 'Backspace') {
-        setTypedWord(words => {
-          const copy = [...words]
-          copy[currentWordIdx] = ''
-          return copy
-        })
+    if (value.endsWith(' ')) {
+      const currentTypedWord = value.trim()
+
+      if (currentTypedWord.length === 0) {
+        setInputText('')
+        return
       }
-      return
-    }
 
-    if (e.key === 'Backspace') {
+      if (currentWordIdx === words.length - 1) {
+        return
+      }
+
       setTypedWord(words => {
         const copy = [...words]
-        if (copy.length > 0) {
-          copy[currentWordIdx] = copy[currentWordIdx].slice(0, -1)
+        copy[currentWordIdx] = currentTypedWord
+        if (copy.length <= currentWordIdx + 1) {
+          copy.push('')
         }
         return copy
       })
-      return
-    }
-
-    if (e.key === ' ') {
-      e.preventDefault()
-      if (typedWord[currentWordIdx].length === 0) return
-
-      if (currentWordIdx === (words!.length - 1)) {
-        const total = totalTypedCharsRef.current
-        const errorCount = wrongCharsRef.current
-        const correct = Math.max(0, total - errorCount)
-        setCorrectChars(correct)
-        setIncorrectChars(errorCount)
-
-        const accuracy = total === 0 ? 100 : Math.round((correct / total) * 100)
-        setAccuracy(accuracy)
-        setTestCompleted(true)
-        return
-      }
-      setTypedWord(words => [...words, ''])
       setCurrentWordIdx(prev => prev + 1)
+      setInputText('')
       return
     }
 
+    const wordLengthBeforeUpdate = inputText.length
+    const updatedWordLength = value.length
 
-    if (e.key.length !== 1) return;
-
-    totalTypedCharsRef.current += 1
-
-    let expectedChar
-    if (words) {
+    if (updatedWordLength > wordLengthBeforeUpdate) {
       const currentWord = words[currentWordIdx]
-      const typedWordLen = typedWord[currentWordIdx].length
-      expectedChar = currentWord[typedWordLen]
-    } else {
-      expectedChar = undefined
-    }
+      const charIdx = updatedWordLength - 1
+      const expectedChar = currentWord[charIdx]
+      const typedChar = value[charIdx]
 
-    if (expectedChar !== e.key) {
-      wrongCharsRef.current += 1
-    }
+      totalTypedCharsRef.current += 1
 
-    const total = totalTypedCharsRef.current
-    const errorCount = wrongCharsRef.current
-    const correct = Math.max(0, total - errorCount)
-    setCorrectChars(correct)
-    setIncorrectChars(errorCount)
-    const accuracy = total === 0 ? 100 : Math.round((correct / total) * 100)
-    setAccuracy(accuracy)
+      if (expectedChar !== typedChar) {
+        wrongCharsRef.current += 1
+      }
+
+      const total = totalTypedCharsRef.current
+      const errorCount = wrongCharsRef.current
+      const correct = Math.max(0, total - errorCount)
+      setCorrectChars(correct)
+      setIncorrectChars(errorCount)
+      const accuracy = total === 0 ? 100 : Math.round((correct / total) * 100)
+      setAccuracy(accuracy)
+
+      if (currentWordIdx === words.length - 1 && value.length === currentWord.length) {
+        setTestCompleted(true)
+      }
+    }
 
     setTypedWord(words => {
       const copy = [...words]
-      copy[currentWordIdx] += e.key
+      copy[currentWordIdx] = value
       return copy
     })
-  }, [currentWordIdx, typedWord, words, setTestCompleted, isStarted, setAccuracy, setCorrectChars, setIncorrectChars])
+    setInputText(value)
+
+  }, [currentWordIdx, inputText, words, setTestCompleted, isStarted, setAccuracy, setCorrectChars, setIncorrectChars])
 
   useEffect(() => {
     if (!isStarted) return
@@ -153,20 +138,6 @@ const Text = () => {
     setWpm(netWpm)
   }, [timer, isStarted, mode])
 
-
-  useEffect(() => {
-    const textContainer = containerRef.current
-
-    if (textContainer) {
-      textContainer.addEventListener('keydown', handleKeyDown)
-    }
-    return () => {
-      if (textContainer) {
-        textContainer.removeEventListener('keydown', handleKeyDown)
-      }
-    }
-  }, [handleKeyDown])
-
   useEffect(() => {
     scrollIntoView()
   }, [currentWordIdx, typedWord])
@@ -174,32 +145,24 @@ const Text = () => {
   return (
     <section
       ref={containerRef}
-      tabIndex={-1}
       className="text-wrapper"
     >
-      {isMobile && (
-        <input
-          type="text"
-          ref={inputRef}
-          autoFocus
-          value={typedWord[currentWordIdx] ?? ''}
-          className="absolute opacity-0 h-0 w-0"
-          onChange={(e) => {
-            const val = e.target.value
-            const newChar = val.slice(-1)
-            if (newChar) handleKeyDown({ key: newChar } as KeyboardEvent)
-          }}
-        />
-      )}
-
       <div
         className={!isStarted ? 'layer cursor-default' : ''}
         onClick={() => {
-          setIsStarted(true)
           inputRef.current?.focus()
+          setIsStarted(true)
         }}
       >
-        <p className="text-container">
+        <input
+          type="text"
+          ref={inputRef}
+          value={inputText}
+          onChange={handleInputChange}
+          className="absolute opacity-0 pointer-events-none"
+        />
+
+        <div className="text-container">
           {
             words?.map((word, wordIdx) => {
               const userWord = typedWord[wordIdx] ?? ''
@@ -246,7 +209,7 @@ const Text = () => {
               )
             })
           }
-        </p>
+        </div>
       </div>
       {
         !isStarted && <Overlay />

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-// import ArrowDown from "../assets/images/icon-down-arrow.svg"
 import type { Difficulty, Mode } from "../types/project";
 import { useStore } from "../store/useStore";
 import { formatTimer } from "../util/format-timer";
@@ -120,6 +119,7 @@ const Stats = () => {
               onChange={handleDifficultyChange}
               disabled={isStarted}
               tabIndex={0}
+              className='bg-position-[center_right_20%]'
             >
               {/* <button>
                 <selectedcontent></selectedcontent>
@@ -187,6 +187,7 @@ const Stats = () => {
               onChange={handleModeChange}
               disabled={isStarted}
               tabIndex={0}
+              className='bg-position-[center_right_10%]'
             >
               {/* <button>
                 <selectedcontent></selectedcontent>

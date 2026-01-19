@@ -52,6 +52,10 @@
   select{
     @apply px-2.5 w-full py-1.5 border border-neutral-500 rounded-lg leading-[1.2] -tracking-[0.48px] justify-center items-center cursor-pointer focus:outline-blue-600 focus:outline-offset-2;
   }
+  select{
+    background: url(/src/assets/images/icon-down-arrow.svg);
+    background-repeat: no-repeat;
+  }
   select, ::picker(select){
     appearance: base-select;
   }
