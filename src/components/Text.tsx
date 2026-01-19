@@ -12,6 +12,7 @@ const Text = () => {
   const [typedWord, setTypedWord] = useState<string[]>([''])
   const containerRef = useRef<HTMLElement | null>(null)
   const charRef = useRef<HTMLSpanElement | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const words = passage?.text.split(' ')
 
   const startTimeRef = useRef<number | null>(null)
@@ -173,9 +174,19 @@ const Text = () => {
       tabIndex={-1}
       className="text-wrapper"
     >
+      <input
+        type="text"
+        ref={inputRef}
+        autoFocus
+        className="absolute opacity-0 h-0 w-0"
+        onKeyDown={(e) => handleKeyDown(e.nativeEvent as KeyboardEvent)}
+      />
       <div
         className={!isStarted ? 'layer cursor-default' : ''}
-        onClick={() => setIsStarted(true)}
+        onClick={() => {
+          setIsStarted(true)
+          inputRef.current?.focus()
+        }}
       >
         <p className="text-container">
           {
