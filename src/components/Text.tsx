@@ -173,6 +173,13 @@ const Text = () => {
       tabIndex={-1}
       className="text-wrapper"
     >
+      <input
+        type="text"
+        autoFocus
+        className="absolute opacity-0 h-0 w-0"
+        onKeyDown={(e) => handleKeyDown(e.nativeEvent as KeyboardEvent)}
+        onFocus={() => setIsStarted(true)}
+      />
       <div
         className={!isStarted ? 'layer cursor-default' : ''}
         onClick={() => setIsStarted(true)}
