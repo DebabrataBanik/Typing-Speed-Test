@@ -2,8 +2,6 @@
 
 This is a solution to the **Typing Speed Test** challenge built as part of a Frontend Mentor hackathon.
 
-The focus of this project was not just UI, but implementing **accurate typing logic**, meaningful metrics, and handling real-time user input correctly - all on the frontend, with no backend support.
-
 ## Table of Contents
 
 * The Challenge
@@ -13,21 +11,28 @@ The focus of this project was not just UI, but implementing **accurate typing lo
 * My Process
 * Challenges Faced
 * Continued Development
+* Author
 
 ## The Challenge
 
-Users should be able to:
+This project is a **Typing Speed Test** app that calculates WPM and accuracy. Even though it looks simple on the surface, it involves a lot of real-time UI updates, DOM manipulation, keyboard handling and timer logic.
 
-* Take a timed typing test
-* See their typing speed calculated as **Net WPM**
-* Get real-time feedback for correct and incorrect characters
-* View accuracy and error count
-* Restart the test instantly
-* Use the app comfortably across different screen sizes
+### Core features:
+
+* Start tests by clicking or simply by typing
+* Difficulty levels: Easy, Medium, Hard
+* Two modes: Timed (60s) and Passage-based 
+* Real-time stats with visual feedback for correct and incorrect characters
+* Results screen showing WPM, accuracy, and character counts 
+* Fully responsive design with proper hover and focus states
+
+> Personal best tracking using localStorage is planned but not implemented yet and is part of future development.
 
 ## Screenshots
 
-![This is the first state landing on the app](<typing-speed-test-main/Landing state ss.png>)
+![Landing state](<public/Landing state ss.png>)
+
+![Active state](<public/running state.png>)
 
 ## Links
 
@@ -36,26 +41,43 @@ Users should be able to:
 
 ## Built with
 
-* React & TypeScript
-* Semantic HTML5 markup
+* React 
+* TypeScript
 * Tailwind CSS
-* Mobile-first workflow
 
 ## My Process
 
-I started by focusing on the **core logic** rather than the UI. The first priority was tracking user input accurately on a per-character basis and syncing it with a timer that starts on the first keystroke.
+I started by building the base UI first and setting up how the text would be rendered on the screen. Once that was in place, I moved on to the typing logic, which initially worked but later turned out to be flawed.
 
-Once the logic was stable, I worked on calculating typing metrics such as WPM, accuracy, and error count. The UI was then built around this logic to keep feedback clear and distraction-free.
+After that, I added the timer logic, followed by calculating typing statistics like WPM and accuracy. Once the stats were working, I implemented the results screen that shows the final performance at the end of the test.
 
-Responsiveness was handled later to ensure the app works well on both desktop and mobile screens.
+Some parts of the logic had to be revisited and reworked later, but having the UI and flow in place early made it easier to refactor without breaking everything.
 
 ## Challenges Faced
 
-The biggest challenge was deciding **how typing speed should be calculated**.
+### Keyboard input handling (desktop vs mobile)
 
-Initially, using only Gross WPM felt misleading because users could type carelessly and still get high scores. To solve this, I implemented **Net WPM**, which penalizes errors and reflects real typing performance.
+The biggest mistake I made was how I handled keyboard input initially.
 
-Handling edge cases like backspacing, preventing extra input beyond the target text, and syncing timer state with user interaction also required careful handling.
+I started by attaching a keydown event listener directly to the text container and registering every key press from there. This meant I had to manually ignore unnecessary key events and write separate logic for things like backspace, space, and key combinations. While this approach worked fine on desktop, but the issue showed up in smaller screens as the keyboard wouldn't open as there was no input field and it was unnecessarily complex. 
+
+At that point, it became obvious that using an input field from the start would have avoided most of this complexity. I refactored the logic to use an invisible input element, focused it when the test starts, and read all typed characters from there while keeping the rest of the comparison and stats logic mostly the same.
+
+### Text rendering approach
+
+Another major refactor was related to how the typing text itself was rendered in HTML.
+
+Initially, I split the entire passage character by character and rendered everything at the character level. While this gave fine-grained control, it quickly became messy when trying to manage active states, word boundaries, and styling.
+
+I later switched to rendering the passage word by word, and then rendering characters inside each word. This made it easier to treat a word as a unit for styling and logic, while still allowing character-level comparison for correctness.
+
+### Calculating typing metrics correctly
+
+Another challenge was figuring out the math behind typing statistics.
+
+The current implementation uses the commonly accepted rule of 1 word = 5 characters when calculating WPM. While this works reasonably well, I think it isn’t perfect especially once difficulty levels and different modes are involved.
+
+Using a static character count doesn’t always reflect real typing complexity, so this is something I plan to improve if more modes and variations are added later.
 
 ## Continued Development
 
@@ -67,4 +89,4 @@ Handling edge cases like backspacing, preventing extra input beyond the target t
 
 ## Author
 
-* Debabrata K Banik - [Frontend Mentor](https://www.frontendmentor.io/profile/DebabrataBanik)
+* Frontend Mentor - [@DebabrataBanik](https://www.frontendmentor.io/profile/DebabrataBanik)
