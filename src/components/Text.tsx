@@ -19,6 +19,9 @@ const Text = () => {
   const totalTypedCharsRef = useRef(0)
   const wrongCharsRef = useRef(0)
 
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent)
+
+
   useEffect(() => {
     setPassage(() => getTextContent(level))
   }, [level])
@@ -174,13 +177,21 @@ const Text = () => {
       tabIndex={-1}
       className="text-wrapper"
     >
-      <input
-        type="text"
-        ref={inputRef}
-        autoFocus
-        className="absolute opacity-0 h-0 w-0"
-        onKeyDown={(e) => handleKeyDown(e.nativeEvent as KeyboardEvent)}
-      />
+      {isMobile && (
+        <input
+          type="text"
+          ref={inputRef}
+          autoFocus
+          value={typedWord[currentWordIdx] ?? ''}
+          className="absolute opacity-0 h-0 w-0"
+          onChange={(e) => {
+            const val = e.target.value
+            const newChar = val.slice(-1)
+            if (newChar) handleKeyDown({ key: newChar } as KeyboardEvent)
+          }}
+        />
+      )}
+
       <div
         className={!isStarted ? 'layer cursor-default' : ''}
         onClick={() => {
