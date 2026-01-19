@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import ArrowDown from "../assets/images/icon-down-arrow.svg"
+// import ArrowDown from "../assets/images/icon-down-arrow.svg"
 import type { Difficulty, Mode } from "../types/project";
 import { useStore } from "../store/useStore";
 import { formatTimer } from "../util/format-timer";
@@ -121,12 +121,12 @@ const Stats = () => {
               disabled={isStarted}
               tabIndex={0}
             >
-              <button>
+              {/* <button>
                 <selectedcontent></selectedcontent>
                 <span>
                   <img src={ArrowDown} />
                 </span>
-              </button>
+              </button> */}
               <option value="easy">
                 <span className="checkbox"></span>
                 Easy
@@ -188,12 +188,12 @@ const Stats = () => {
               disabled={isStarted}
               tabIndex={0}
             >
-              <button>
+              {/* <button>
                 <selectedcontent></selectedcontent>
                 <span>
                   <img src={ArrowDown} />
                 </span>
-              </button>
+              </button> */}
               <option value="timed">
                 <span className="checkbox"></span>
                 Timed (60s)
