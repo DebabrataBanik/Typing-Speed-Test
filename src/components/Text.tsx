@@ -43,7 +43,9 @@ const Text = () => {
   const scrollIntoView = useCallback(() => {
     if (charRef.current) {
       charRef.current.scrollIntoView({
-        behavior: 'smooth'
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest'
       })
     }
   }, [])
@@ -136,7 +138,7 @@ const Text = () => {
 
   useEffect(() => {
     scrollIntoView()
-  }, [currentWordIdx, typedWord])
+  }, [currentWordIdx, scrollIntoView])
 
   return (
     <section

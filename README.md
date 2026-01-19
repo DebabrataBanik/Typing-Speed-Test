@@ -36,8 +36,8 @@ This project is a **Typing Speed Test** app that calculates WPM and accuracy. Ev
 
 ## Links
 
-* Live Site URL: []
-* Solution URL: []
+* [Live Site URL](https://typing-speed-test-sigma-one.vercel.app/)
+* [Solution URL]()
 
 ## Built with
 
