@@ -16,7 +16,6 @@ const Text = () => {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const words = passage?.text.split(' ')
 
-  const startTimeRef = useRef<number | null>(null)
   const totalTypedCharsRef = useRef(0)
   const wrongCharsRef = useRef(0)
 
@@ -27,8 +26,6 @@ const Text = () => {
   useEffect(() => {
     if (isStarted && inputRef.current) {
       inputRef.current.focus()
-
-      startTimeRef.current = Date.now()
     }
 
     if (!isStarted) {
@@ -36,7 +33,6 @@ const Text = () => {
       setTypedWord([''])
       setInputText('')
 
-      startTimeRef.current = null
       totalTypedCharsRef.current = 0
       wrongCharsRef.current = 0
       setAccuracy(100)
@@ -160,6 +156,10 @@ const Text = () => {
           value={inputText}
           onChange={handleInputChange}
           className="absolute opacity-0 pointer-events-none"
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck="false"
         />
 
         <div className="text-container">
