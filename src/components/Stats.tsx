@@ -44,6 +44,16 @@ const Stats = () => {
     setMode(e.target.value as Mode)
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLLabelElement>) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const input = e.currentTarget.querySelector('input');
+      if (input && !input.disabled) {
+        input.click();
+      }
+    }
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col xl:grid grid-cols-12 gap-8">
@@ -70,20 +80,24 @@ const Stats = () => {
             <div className="flex items-center gap-1.5">
               <label
                 className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={0}
+                tabIndex={isStarted ? -1 : 0}
+                onKeyDown={handleKeyDown}
               >
                 <input
-                  onChange={handleDifficultyChange} type="radio"
+                  onChange={handleDifficultyChange}
+                  type="radio"
                   name="difficulty"
                   value='easy'
                   checked={level === 'easy'}
                   disabled={isStarted}
+                  tabIndex={-1}
                 />
                 Easy
               </label>
               <label
                 className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={0}
+                tabIndex={isStarted ? -1 : 0}
+                onKeyDown={handleKeyDown}
               >
                 <input
                   onChange={handleDifficultyChange}
@@ -92,12 +106,14 @@ const Stats = () => {
                   value='medium'
                   checked={level === 'medium'}
                   disabled={isStarted}
+                  tabIndex={-1}
                 />
                 Medium
               </label>
               <label
                 className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={0}
+                tabIndex={isStarted ? -1 : 0}
+                onKeyDown={handleKeyDown}
               >
                 <input
                   onChange={handleDifficultyChange}
@@ -151,7 +167,8 @@ const Stats = () => {
             <div className="flex items-center gap-1.5">
               <label
                 className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={0}
+                tabIndex={isStarted ? -1 : 0}
+                onKeyDown={handleKeyDown}
               >
                 <input
                   onChange={handleModeChange}
@@ -160,12 +177,14 @@ const Stats = () => {
                   value='timed'
                   checked={mode === 'timed'}
                   disabled={isStarted}
+                  tabIndex={-1}
                 />
                 Timed (60s)
               </label>
               <label
                 className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={0}
+                tabIndex={isStarted ? -1 : 0}
+                onKeyDown={handleKeyDown}
               >
                 <input
                   onChange={handleModeChange}
@@ -174,6 +193,7 @@ const Stats = () => {
                   value='passage'
                   checked={mode === 'passage'}
                   disabled={isStarted}
+                  tabIndex={-1}
                 />
                 Passage
               </label>

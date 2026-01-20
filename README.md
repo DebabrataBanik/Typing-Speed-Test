@@ -4,14 +4,14 @@ This is a solution to the **Typing Speed Test** challenge built as part of a Fro
 
 ## Table of Contents
 
-* The Challenge
-* Screenshots
-* Links
-* Built with
-* My Process
-* Challenges Faced
-* Continued Development
-* Author
+* [The Challenge](#the-challenge)
+* [Screenshots](#screenshots)
+* [Links](#links)
+* [Built with](#built-with)
+* [My Process](#my-process)
+* [Challenges Faced](#challenges-faced)
+* [Continued Development](#continued-development)
+* [Author](#author)
 
 ## The Challenge
 
@@ -82,9 +82,8 @@ Using a static character count doesn’t always reflect real typing complexity, 
 ## Continued Development
 
 * Add multiple test durations and difficulty levels
-* Allow custom text input
 * Store past results using localStorage
-* Improve visual feedback for errors
+* Add visual and audio feedback while typing
 * Add a dark mode toggle
 
 ## Author
