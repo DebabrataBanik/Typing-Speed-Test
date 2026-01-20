@@ -63,7 +63,7 @@ const ResultsPage = () => {
 
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden resultPage_wrapper bg-size-[20px] sm:bg-auto">
       {
         resultType === "highScore" &&
         <ReactConfetti

@@ -149,6 +149,13 @@
   .stat_container{
     @apply lg:w-[160px] w-full flex flex-col px-6 py-4 gap-3 rounded-lg border border-neutral-700;
   }
+
+  .resultPage_wrapper{
+    background: url(/src/assets/images/pattern-star-1.svg), url(/src/assets/images/pattern-star-2.svg);
+    background-repeat: no-repeat;
+    background-position: right bottom, left top 15%;
+  }
+  
 }
 
 @layer utilities{

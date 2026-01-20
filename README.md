@@ -10,12 +10,13 @@ This is a solution to the **Typing Speed Test** challenge built as part of a Fro
 * [Built with](#built-with)
 * [My Process](#my-process)
 * [Challenges Faced](#challenges-faced)
+* [What I learned](#what-i-learned)
 * [Continued Development](#continued-development)
 * [Author](#author)
 
 ## The Challenge
 
-This project is a **Typing Speed Test** app that calculates WPM and accuracy. Even though it looks simple on the surface, it involves a lot of real-time UI updates, DOM manipulation, keyboard handling and timer logic.
+This project is a **Typing Speed Test** app that calculates WPM and accuracy in real time. Even though it looks simple on the surface, it involves a lot of real-time UI updates, DOM manipulation, keyboard handling and timer logic.
 
 ### Core features:
 
@@ -44,6 +45,7 @@ This project is a **Typing Speed Test** app that calculates WPM and accuracy. Ev
 * React 
 * TypeScript
 * Tailwind CSS
+* Zustand
 
 ## My Process
 
@@ -51,40 +53,64 @@ I started by building the base UI first and setting up how the text would be ren
 
 After that, I added the timer logic, followed by calculating typing statistics like WPM and accuracy. Once the stats were working, I implemented the results screen that shows the final performance at the end of the test.
 
-Some parts of the logic had to be revisited and reworked later, but having the UI and flow in place early made it easier to refactor without breaking everything.
+Some parts of the logic required significant refactoring as I discovered better approaches.
 
 ## Challenges Faced
 
 ### Keyboard input handling (desktop vs mobile)
 
-The biggest mistake I made was how I handled keyboard input initially.
+The biggest challenge was designing a keyboard input system that works seamlessly across both desktop and mobile devices.
 
-I started by attaching a keydown event listener directly to the text container and registering every key press from there. This meant I had to manually ignore unnecessary key events and write separate logic for things like backspace, space, and key combinations. While this approach worked fine on desktop, but the issue showed up in smaller screens as the keyboard wouldn't open as there was no input field and it was unnecessarily complex. 
+My initial approach used a keydown event listener directly on the text container, manually processing every keystroke. This meant writing custom logic for backspace, space bar, modifier keys, and other special inputs. While functional on desktop, this approach completely failed on mobile devices where the virtual keyboard wouldn't appear without a proper input element.
 
-At that point, it became obvious that using an input field from the start would have avoided most of this complexity. I refactored the logic to use an invisible input element, focused it when the test starts, and read all typed characters from there while keeping the rest of the comparison and stats logic mostly the same.
+**The solution**: I refactored to use an invisible input field that receives focus when the test starts. This provides native keyboard support across all devices while maintaining the same visual experience and comparison logic. The input field captures all typed text, which is then compared character-by-character against the passage.
 
 ### Text rendering approach
 
-Another major refactor was related to how the typing text itself was rendered in HTML.
+Another major refactor was related to how the passage text was rendered in DOM.
 
-Initially, I split the entire passage character by character and rendered everything at the character level. While this gave fine-grained control, it quickly became messy when trying to manage active states, word boundaries, and styling.
+Initially, I split the entire passage character by character and rendered everything at the character level. However, this quickly became difficult to manage when handling word boundaries, active character states and overflow text.
 
-I later switched to rendering the passage word by word, and then rendering characters inside each word. This made it easier to treat a word as a unit for styling and logic, while still allowing character-level comparison for correctness.
+**The solution**: I switched to a word-based rendering approach where each word is a container, and characters are rendered within. This made it much easier to:
+
+- Style entire words (e.g., marking incorrect words with a different background)
+- Handle word boundaries and spacing
+- Manage the "active character" cursor position
+- Display overflow characters when users type beyond the word length
 
 ### Calculating typing metrics correctly
 
-Another challenge was figuring out the math behind typing statistics.
+Figuring out the math behind typing statistics was more nuanced than expected.
 
-The current implementation uses the commonly accepted rule of 1 word = 5 characters when calculating WPM. While this works reasonably well, I think it isn’t perfect especially once difficulty levels and different modes are involved.
+**WPM Calculation**:
+` WPM = (correct characters / 5) / time in minutes `
 
-Using a static character count doesn’t always reflect real typing complexity, so this is something I plan to improve if more modes and variations are added later.
+**Accuracy Calculation**:
+`Accuracy = (correct characters / total characters typed) × 100`
+
+**The challenge**: While the 5 character standard works well for average English text, it doesn't perfectly reflect typing complexity. For example:
+
+- A passage with longer words (8-10 characters each) would show lower WPM despite requiring more effort
+- A passage with shorter words (2-3 characters each) would inflate WPM numbers
+- Different difficulty levels have varying word complexity, but use the same calculation metric
+
+## What I learned
+
+- **Event handling patterns**: Understanding when to use controlled inputs vs manual event listeners
+- **Real-time calculations**: Implementing efficient statistical calculations that update on every keystroke
+- **Mobile first thinking**: The importance of considering mobile input methods from the start
+- **Accessibility**: Making custom UI controls keyboard navigable (Tab + Enter for radio buttons)
 
 ## Continued Development
 
-* Add multiple test durations and difficulty levels
-* Store past results using localStorage
-* Add visual and audio feedback while typing
-* Add a dark mode toggle
+- Add multiple test durations (15s, 30s, 60s, 120s)
+- Verify and optimize real-time stats calculation for edge cases
+- Implement personal best tracking with localStorage
+- Add visual progress indicators and typing animations
+- Include audio feedback for correct/incorrect keystrokes
+- Add a dark mode toggle
+- Display detailed statistics (error breakdown, slowest words, typing rhythm graph)
+- Support for custom text passages
 
 ## Author
 
