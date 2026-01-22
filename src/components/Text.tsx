@@ -6,7 +6,7 @@ import Overlay from "./Overlay"
 
 const Text = () => {
 
-  const { level, isStarted, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars } = useStore();
+  const { level, isStarted, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars, testCompleted } = useStore();
   const [passage, setPassage] = useState<TextItem | null>(null)
   const [currentWordIdx, setCurrentWordIdx] = useState(0)
   const [typedWord, setTypedWord] = useState<string[]>([''])
@@ -119,7 +119,6 @@ const Text = () => {
 
   useEffect(() => {
     if (!isStarted) return
-    if (timer === 0) return
 
     const elapsedMinutes =
       mode === 'timed'
@@ -134,7 +133,7 @@ const Text = () => {
 
     const netWpm = Math.round((correct / 5) / elapsedMinutes)
     setWpm(netWpm)
-  }, [timer, isStarted, mode])
+  }, [timer, isStarted, mode, testCompleted])
 
   useEffect(() => {
     scrollIntoView()
