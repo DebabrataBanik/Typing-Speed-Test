@@ -2,7 +2,7 @@ import { useStore } from "../store/useStore"
 import Completed from '../assets/images/icon-completed.svg'
 import Bouquet from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import ReactConfetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
@@ -11,27 +11,30 @@ const Result = {
     heading: 'Baseline Established!',
     text: 'You’ve set the bar. Now the real challenge begins—time to beat it.',
     imgSrc: Completed,
+    imgAlt: 'completed-icon',
     btnText: 'Beat This Score',
   },
   completed: {
     heading: 'Test Completed!',
     text: 'Solid run. Keep pushing to beat your high score.',
     imgSrc: Completed,
+    imgAlt: 'completed-icon',
     btnText: 'Go Again',
   },
   highScore: {
     heading: 'High Score Smashed!',
     text: 'You’re getting faster. That was incredible typing.',
     imgSrc: Bouquet,
+    imgAlt: 'bouquet-icon',
     btnText: 'Beat This Score',
   },
-} as const
+}
 
 
 const ResultsPage = () => {
 
   const { bestScore, setBestScore, setIsStarted, setTestCompleted, wpm, accuracy, setWpm, setAccuracy, correctChars, incorrectChars } = useStore();
-  const prevBestScoreRef = useRef<number | null>(bestScore);
+  const [prevBestScore] = useState<number | null>(bestScore);
 
   const { width, height } = useWindowSize()
 
@@ -46,26 +49,23 @@ const ResultsPage = () => {
     if (bestScore === null || wpm > bestScore) {
       setBestScore(wpm)
     }
-  }, [wpm])
+  }, [])
 
 
-  let resultType: keyof typeof Result;
+  let result
 
-  if (prevBestScoreRef.current === null) {
-    resultType = 'baseline';
-  } else if (wpm > prevBestScoreRef.current) {
-    resultType = 'highScore';
+  if (prevBestScore === null) {
+    result = Result.baseline;
+  } else if (wpm > prevBestScore) {
+    result = Result.highScore;
   } else {
-    resultType = 'completed';
+    result = Result.completed;
   }
-
-  const result = Result[resultType];
-
 
   return (
     <div className="overflow-hidden resultPage_wrapper bg-size-[20px] sm:bg-auto">
       {
-        resultType === "highScore" &&
+        result === Result.highScore &&
         <ReactConfetti
           width={width}
           height={height}
@@ -73,7 +73,7 @@ const ResultsPage = () => {
       }
 
       <div className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8">
-        <img src={result.imgSrc} alt={`${result.imgSrc} icon`} className={`${resultType !== 'highScore' ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
+        <img src={result.imgSrc} alt={result.imgAlt} className={`${result !== Result.highScore ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
         <div className="flex flex-col items-center gap-2.5">
           <h1 className="results-header">{result.heading}</h1>
           <p className="results-subtext">{result.text}</p>
@@ -97,6 +97,7 @@ const ResultsPage = () => {
           </div>
         </div>
         <button
+          type="button"
           onClick={handleRestart}
           className="px-4 py-2.5 flex items-center gap-2.5 font-semibold text-lg leading-[1.2] -tracking-[0.3px] rounded-xl bg-neutral-0 text-neutral-900 cursor-pointer"
         >
