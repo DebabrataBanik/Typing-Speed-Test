@@ -3,8 +3,7 @@ import Completed from '../assets/images/icon-completed.svg'
 import Bouquet from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
 import { useEffect, useState } from "react";
-import ReactConfetti from "react-confetti";
-import { useWindowSize } from "react-use";
+import confetti from "canvas-confetti";
 
 const Result = {
   baseline: {
@@ -30,27 +29,35 @@ const Result = {
   },
 }
 
+const triggerFireworks = () => {
+  const duration = 5 * 1000
+  const animationEnd = Date.now() + duration
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
+  const randomInRange = (min: number, max: number) =>
+    Math.random() * (max - min) + min
+  const interval = window.setInterval(() => {
+    const timeLeft = animationEnd - Date.now()
+    if (timeLeft <= 0) {
+      return clearInterval(interval)
+    }
+    const particleCount = 50 * (timeLeft / duration)
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+    })
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+    })
+  }, 250)
+}
 
 const ResultsPage = () => {
 
   const { bestScore, setBestScore, setIsStarted, setTestCompleted, wpm, accuracy, setWpm, setAccuracy, correctChars, incorrectChars } = useStore();
   const [prevBestScore] = useState<number | null>(bestScore);
-
-  const { width, height } = useWindowSize()
-
-  const handleRestart = () => {
-    setTestCompleted(false)
-    setIsStarted(false)
-    setAccuracy(100)
-    setWpm(0)
-  }
-
-  useEffect(() => {
-    if (bestScore === null || wpm > bestScore) {
-      setBestScore(wpm)
-    }
-  }, [])
-
 
   let result
 
@@ -62,17 +69,28 @@ const ResultsPage = () => {
     result = Result.completed;
   }
 
+  useEffect(() => {
+    if (bestScore === null || wpm > bestScore) {
+      setBestScore(wpm)
+    }
+    if (prevBestScore && wpm > prevBestScore) {
+      triggerFireworks()
+    }
+  }, [])
+
+  const handleRestart = () => {
+    setTestCompleted(false)
+    setIsStarted(false)
+    setAccuracy(100)
+    setWpm(0)
+  }
+
   return (
     <div className="overflow-hidden resultPage_wrapper bg-size-[20px] sm:bg-auto">
-      {
-        result === Result.highScore &&
-        <ReactConfetti
-          width={width}
-          height={height}
-        />
-      }
 
-      <div className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8">
+      <div
+        className="mt-12 sm:mt-20 xl:mt-16 flex flex-col items-center gap-8"
+      >
         <img src={result.imgSrc} alt={result.imgAlt} className={`${result !== Result.highScore ? 'completed-icon' : ''} w-10 h-10 sm:w-16 sm:h-16`} />
         <div className="flex flex-col items-center gap-2.5">
           <h1 className="results-header">{result.heading}</h1>
