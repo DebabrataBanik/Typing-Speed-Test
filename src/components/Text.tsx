@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react"
 import { getTextContent } from "../util/difficulty-text-map"
 import type { TextItem } from "../types/project"
 import { useStore } from "../store/useStore"
@@ -49,6 +49,21 @@ const Text = () => {
       })
     }
   }, [])
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const copy = (e.ctrlKey || e.metaKey) && e.key === 'c'
+    const paste = (e.ctrlKey || e.metaKey) && e.key === 'v'
+    const undo = (e.ctrlKey || e.metaKey) && e.key === 'z'
+    const del = (e.ctrlKey || e.metaKey) && e.key === 'x'
+    const selectAll = (e.ctrlKey || e.metaKey) && e.key === 'a'
+
+    if (copy || paste || undo || del || selectAll) {
+      e.preventDefault()
+    }
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault();
+    }
+  }
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isStarted || !words) return
@@ -156,6 +171,7 @@ const Text = () => {
           ref={inputRef}
           value={inputText}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           className="absolute opacity-0 pointer-events-none"
           autoComplete="off"
           autoCapitalize="off"
