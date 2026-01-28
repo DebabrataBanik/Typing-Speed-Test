@@ -214,6 +214,12 @@
   .wrapper{
     @apply relative min-h-screen mx-auto max-w-[1216px] py-4 sm:py-8 px-4 sm:px-8 xl:px-0;
   }
+  .mask{
+    @apply blur-md pointer-events-none select-none;
+  }
+  .history_wrapper{
+    @apply absolute top-1/2 left-1/2 -translate-1/2 flex flex-col items-center gap-2.5 z-10 bg-neutral-800 border border-neutral-700 rounded-xl w-96;
+  }
   .stats_label{
     @apply text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400 flex items-center flex-col sm:flex-row gap-2 sm:gap-3;
   }

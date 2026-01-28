@@ -5,3 +5,11 @@ export interface TextItem{
   id: string;
   text: string;
 }
+
+export interface Result{
+  accuracy: number;
+  correctChars: number;
+  incorrectChars: number;
+  wpm: number;
+  timestamp: number
+}

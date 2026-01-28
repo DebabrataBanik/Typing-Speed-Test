@@ -1,6 +1,6 @@
 import { useStore } from "../store/useStore"
 import Completed from '../assets/images/icon-completed.svg'
-import Bouquet from '../assets/images/icon-new-pb.svg'
+import Confetti from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
@@ -23,7 +23,7 @@ const Result = {
   highScore: {
     heading: 'High Score Smashed!',
     text: 'You’re getting faster. That was incredible typing.',
-    imgSrc: Bouquet,
+    imgSrc: Confetti,
     imgAlt: 'bouquet-icon',
     btnText: 'Beat This Score',
   },
@@ -58,6 +58,7 @@ const ResultsPage = () => {
 
   const { bestScore, setBestScore, setIsStarted, setTestCompleted, wpm, accuracy, setWpm, setAccuracy, correctChars, incorrectChars } = useStore();
   const [prevBestScore] = useState<number | null>(bestScore);
+  const [timestamp] = useState(() => Date.now())
 
   let result
 
@@ -76,6 +77,12 @@ const ResultsPage = () => {
     if (prevBestScore && wpm > prevBestScore) {
       triggerFireworks()
     }
+
+    const key = `res-${timestamp}`
+    const resObj = {
+      wpm, accuracy, correctChars, incorrectChars, timestamp
+    }
+    localStorage.setItem(key, JSON.stringify(resObj))
   }, [])
 
   const handleRestart = () => {

@@ -22,6 +22,9 @@ type Store = {
   setCorrectChars: (value: number) => void;
   incorrectChars: number;
   setIncorrectChars: (value: number) => void;
+  showHistory: boolean;
+  setShowHistory: (value: boolean) => void;
+
 }
 
 export const useStore = create<Store>((set) => ({
@@ -53,6 +56,8 @@ export const useStore = create<Store>((set) => ({
   setCorrectChars: (value) => set({ correctChars: value }),
 
   incorrectChars: 0,
-  setIncorrectChars: (value) => set({ incorrectChars: value })
+  setIncorrectChars: (value) => set({ incorrectChars: value }),
 
+  showHistory: false,
+  setShowHistory: (value) => set({ showHistory: value })
 }))

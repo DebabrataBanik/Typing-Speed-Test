@@ -3,16 +3,20 @@ import Main from "./components/Main"
 import Footer from "./components/Footer"
 import { useStore } from "./store/useStore"
 import Achievement from "./components/ResultsPage"
+import History from "./components/History"
 
 const App = () => {
-  const { isStarted, testCompleted } = useStore();
+  const { isStarted, testCompleted, showHistory } = useStore();
 
   return (
-    <div className="wrapper">
-      <Header />
-      { !testCompleted && <Main /> }
-      { !testCompleted && isStarted && <Footer /> }
-      { testCompleted && <Achievement /> }
+    <div className="relative">
+      {showHistory && <History />}
+      <div className={`wrapper ${showHistory ? 'mask': ''}`}>
+        <Header />
+        {!testCompleted && <Main />}
+        {!testCompleted && isStarted && <Footer />}
+        {testCompleted && <Achievement />}
+      </div>
     </div>
   )
 }
