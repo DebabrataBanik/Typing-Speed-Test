@@ -10,6 +10,8 @@
 
 @import "tw-animate-css";
 
+@plugin 'tailwind-scrollbar';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -218,13 +220,13 @@
     @apply blur-md pointer-events-none select-none;
   }
   .history_wrapper{
-    @apply absolute top-1/2 left-1/2 -translate-1/2 flex flex-col items-center gap-2.5 z-10 bg-neutral-800 border border-neutral-700 rounded-xl sm:w-[400px];
+    @apply absolute top-1/2 left-1/2 -translate-1/2 z-10 bg-neutral-800 border border-neutral-700 rounded-xl sm:max-w-[400px] w-[90%];
   }
   .result_tab{
-    @apply py-4 px-5 rounded-xl flex justify-between items-center gap-2 border border-transparent hover:border hover:border-neutral-700 transition-all duration-300;
+    @apply py-3.5 px-5 rounded-xl flex justify-between items-center gap-2 border border-transparent hover:border hover:border-neutral-700 transition-all duration-300;
   }
   .result_tab{
-    box-shadow: 0 1px 10px var(--color-neutral-900);
+    box-shadow: 0 2px 5px var(--color-neutral-900);
   }
   .stats_label{
     @apply text-xl leading-[1.2] -tracking-[0.6px] text-neutral-400 flex items-center flex-col sm:flex-row gap-2 sm:gap-3;

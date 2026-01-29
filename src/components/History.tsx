@@ -3,6 +3,17 @@ import { useEffect, useState } from "react";
 import type { Result } from "@/types/project";
 import { useStore } from "@/store/useStore";
 
+const formatDate = (timestamp: number) => {
+  const dateObj = new Date(timestamp);
+  return {
+    date: dateObj.toLocaleDateString('en-GB'),
+    time: dateObj.toLocaleTimeString('en-GB', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+  };
+};
+
 const History = () => {
 
   const [results, setResults] = useState<Result[]>([])
@@ -14,6 +25,11 @@ const History = () => {
     setResults(res)
   }, [])
 
+  const handleClearHistory = () => {
+    localStorage.clear()
+    setResults([])
+  }
+
   return (
     <div className="history_wrapper">
       <section className="w-full">
@@ -23,13 +39,21 @@ const History = () => {
             <p className="text-neutral-400 text-xs">Recent Activity</p>
           </div>
           <button
+            onClick={handleClearHistory} 
+            disabled={results.length === 0}
+            className={`ml-auto mr-4 text-xs px-3 py-1 shadow-md border rounded-md transition-all duration-200 ${
+              results.length === 0
+                ? 'text-neutral-600 border-neutral-800 cursor-not-allowed'
+                : 'text-neutral-400 border-transparent hover:border-neutral-700 active:shadow-none cursor-pointer'
+            }`}>Clear All</button>
+          <button
             onClick={() => setShowHistory(false)} 
-            className="cursor-pointer"
+            className="cursor-pointer border border-transparent hover:border-neutral-700 hover:scale-90 shadow-md rounded-full transition-all duration-200"
           >
-            <X className="w-8 h-8 p-1 hover:bg-neutral-700 hover:p-1.5 hover:rounded-full duration-300 transition-all"/>
+            <X className="w-9 h-9 p-2 transition-all duration-300"/>
           </button>
         </div>
-        <div className="p-5 flex flex-col gap-2">
+        <div className="p-5 flex flex-col gap-4 max-h-[475px] sm:max-h-[505px] overflow-y-scroll scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
           {
             results.length === 0 ? (
               <div className="p-2 text-center text-neutral-400">
@@ -39,38 +63,28 @@ const History = () => {
             :
             (
               results.map((res) => {
-                const dateObj = new Date(res.timestamp)
-                const year = dateObj.getFullYear()
-                const month = dateObj.getMonth() + 1
-                const day = dateObj.getDate()
-                const hours = dateObj.getHours()
-                const mins = dateObj.getMinutes()
-
-                const date = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year.toString()}`
-                const time = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`
-                
-                console.log(year, month, day, hours, mins)
+                const { date, time } = formatDate(res.timestamp)
                 return (
                   <div className="relative">
                     <div 
                       key={res.timestamp}
                       className="result_tab"
                     >
-                      <div title='Date and Time' className="flex flex-col items-start gap-.5">
-                        <span className="text-xs text-neutral-400">{date}</span>
-                        <span className="text-sm">{time}</span>
+                      <div title='Date and Time' className="flex flex-col items-start">
+                        <span className="text-[10px] sm:text-xs text-neutral-400">{date}</span>
+                        <span className="text-xs sm:text-sm">{time}</span>
                       </div>
                       <div className="flex flex-col items-center">
-                        <span className="text-xs text-neutral-400">WPM</span>
-                        <span className="text-sm">{res.wpm}</span>
+                        <span className="text-[10px] sm:text-xs text-neutral-400">WPM</span>
+                        <span className="text-xs sm:text-sm">{res.wpm}</span>
                       </div>
                       <div className="flex flex-col items-center">
-                        <span className="text-xs text-neutral-400">Accuracy</span>
-                        <span className="text-sm">{res.accuracy}%</span>
+                        <span className="text-[10px] sm:text-xs text-neutral-400">Accuracy</span>
+                        <span className="text-xs sm:text-sm">{res.accuracy}%</span>
                       </div> 
                       <div className="flex flex-col items-end-safe" title="Correct/Incorrect">
-                        <span className="text-xs text-neutral-400">Characters</span>
-                        <div className="text-sm flex items-center">
+                        <span className="text-[10px] sm:text-xs text-neutral-400">Characters</span>
+                        <div className="text-xs sm:text-sm flex items-center">
                           <span className="text-green-500">{res.correctChars}</span>
                           <span className="text-neutral-400">/</span>
                           <span className="text-red-500">{res.incorrectChars}</span>
