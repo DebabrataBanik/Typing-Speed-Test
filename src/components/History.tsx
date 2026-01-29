@@ -17,10 +17,10 @@ const History = () => {
   return (
     <div className="history_wrapper">
       <section className="w-full">
-        <div className="p-5 border-b border-neutral-700 flex gap-2 items-center justify-between">
+        <div className="p-5 sm:px-6 sm:py-5 border-b border-neutral-700 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold">Test Results</h2>
-            <p className="text-neutral-400 text-sm">Recent Activity</p>
+            <h2 className="text-lg font-semibold">Test Results</h2>
+            <p className="text-neutral-400 text-xs">Recent Activity</p>
           </div>
           <button
             onClick={() => setShowHistory(false)} 
@@ -38,16 +38,45 @@ const History = () => {
             )
             :
             (
-              results.map((res,idx) => {
+              results.map((res) => {
+                const dateObj = new Date(res.timestamp)
+                const year = dateObj.getFullYear()
+                const month = dateObj.getMonth() + 1
+                const day = dateObj.getDate()
+                const hours = dateObj.getHours()
+                const mins = dateObj.getMinutes()
+
+                const date = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year.toString()}`
+                const time = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`
+                
+                console.log(year, month, day, hours, mins)
                 return (
-                  <div 
-                    key={res.timestamp}
-                    className="py-4 px-5 border border-neutral-700 rounded-xl flex justify-between items-center gap-2"
-                  >
-                    <span>{idx+1}</span>
-                    <span>{res.wpm}</span>
-                    <span>{res.accuracy}%</span> 
-                    <span>{res.correctChars}/{res.incorrectChars}</span> 
+                  <div className="relative">
+                    <div 
+                      key={res.timestamp}
+                      className="result_tab"
+                    >
+                      <div title='Date and Time' className="flex flex-col items-start gap-.5">
+                        <span className="text-xs text-neutral-400">{date}</span>
+                        <span className="text-sm">{time}</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-xs text-neutral-400">WPM</span>
+                        <span className="text-sm">{res.wpm}</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-xs text-neutral-400">Accuracy</span>
+                        <span className="text-sm">{res.accuracy}%</span>
+                      </div> 
+                      <div className="flex flex-col items-end-safe" title="Correct/Incorrect">
+                        <span className="text-xs text-neutral-400">Characters</span>
+                        <div className="text-sm flex items-center">
+                          <span className="text-green-500">{res.correctChars}</span>
+                          <span className="text-neutral-400">/</span>
+                          <span className="text-red-500">{res.incorrectChars}</span>
+                        </div>
+                      </div> 
+                    </div>
                   </div>
                 )
               })
