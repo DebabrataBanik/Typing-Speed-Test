@@ -144,15 +144,12 @@ const Stats = () => {
                 </span>
               </button> */}
               <option value="easy">
-                <span className="checkbox"></span>
                 Easy
               </option>
               <option value="medium">
-                <span className="checkbox"></span>
                 Medium
               </option>
               <option value="hard">
-                <span className="checkbox"></span>
                 Hard
               </option>
             </select>
@@ -216,11 +213,9 @@ const Stats = () => {
                 </span>
               </button> */}
               <option value="timed">
-                <span className="checkbox"></span>
                 Timed (60s)
               </option>
               <option value="passage">
-                <span className="checkbox"></span>
                 Passage
               </option>
             </select>
