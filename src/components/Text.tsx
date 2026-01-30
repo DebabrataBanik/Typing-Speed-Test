@@ -179,7 +179,7 @@ const Text = () => {
           spellCheck="false"
         />
 
-        <div className="text-container">
+        <div className="text-container select-none">
           {
             words?.map((word, wordIdx) => {
               const userWord = typedWord[wordIdx] ?? ''

@@ -144,6 +144,11 @@
   --color-yellow-400: hsl(49, 85%, 70%);
 }
 
+::selection{
+  background: white;
+  color: var(--color-neutral-900);
+}
+
 @layer base{
   body{
     @apply relative min-h-screen font-sora bg-neutral-900 text-neutral-0;

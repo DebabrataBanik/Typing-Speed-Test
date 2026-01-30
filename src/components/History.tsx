@@ -14,7 +14,11 @@ const formatDate = (timestamp: number) => {
   };
 };
 
-const History = () => {
+type Props = {
+  containerRef: React.Ref<HTMLDivElement>; 
+} 
+
+const History = ({ containerRef }: Props) => {
 
   const [results, setResults] = useState<Result[]>([])
   const { setShowHistory } = useStore();
@@ -31,7 +35,10 @@ const History = () => {
   }
 
   return (
-    <div className="history_wrapper">
+    <div 
+      ref={containerRef}
+      className="history_wrapper"
+    >
       <section className="w-full">
         <div className="p-5 sm:px-6 sm:py-5 border-b border-neutral-700 flex items-center justify-between">
           <div>
@@ -53,11 +60,11 @@ const History = () => {
             <X className="w-9 h-9 p-2 transition-all duration-300"/>
           </button>
         </div>
-        <div className="p-5 flex flex-col gap-4 max-h-[475px] sm:max-h-[505px] overflow-y-scroll scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
+        <div className={`p-5 flex flex-col gap-4 h-[475px] sm:h-[505px] overflow-y-scroll ${results.length > 6 ? 'scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent' : 'scrollbar-none'} `}>
           {
             results.length === 0 ? (
-              <div className="p-2 text-center text-neutral-400">
-                <p>No Results to view.</p>
+              <div className="p-2 text-center text-neutral-400 h-full flex items-center justify-center">
+                <p className="text-sm tracking-wide text-neutral-700 font-semibold">No History Found</p>
               </div>
             )
             :
@@ -65,9 +72,8 @@ const History = () => {
               results.map((res) => {
                 const { date, time } = formatDate(res.timestamp)
                 return (
-                  <div className="relative">
+                  <div key={res.timestamp} className="relative">
                     <div 
-                      key={res.timestamp}
                       className="result_tab"
                     >
                       <div title='Date and Time' className="flex flex-col items-start">

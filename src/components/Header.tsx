@@ -9,18 +9,21 @@ const Header = () => {
   return (
     <header>
       <div className="hidden sm:flex items-center gap-2">
-        <a href="/">
+        <a>
           <img src={logoLarge} alt="Logo" />
         </a>
       </div>
       <div className="flex items-center w-[28px] h-[28px] sm:hidden">
-        <a href="/">
+        <a>
           <img src={logoSmall} alt='Logo' />
         </a>
       </div>
       <div className="flex items-center gap-2.5">
         <button
-          onClick={() => setShowHistory(true)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setShowHistory(true)
+          }}
           className="cursor-pointer self-end mr-1">
           <History className="w-[18px] h-[18px] sm:w-5 sm:h-5 text-neutral-400" />
         </button>
