@@ -30,7 +30,10 @@ const History = ({ containerRef }: Props) => {
   }, [])
 
   const handleClearHistory = () => {
-    localStorage.clear()
+    const keys = Object.keys(localStorage).filter(key => key.startsWith('res-'))
+    for(const key of keys){
+      localStorage.removeItem(key)
+    }
     setResults([])
   }
 
