@@ -74,7 +74,7 @@ const ResultsPage = () => {
     if (bestScore === null || wpm > bestScore) {
       setBestScore(wpm)
     }
-    if (prevBestScore && wpm > prevBestScore) {
+    if (prevBestScore !== null && wpm > prevBestScore) {
       triggerFireworks()
     }
 

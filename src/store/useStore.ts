@@ -27,7 +27,10 @@ type Store = {
 
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set) => { 
+  const best = localStorage.getItem('BestScore')
+
+  return {
   level: 'easy',
   setLevel: (value) => set({ level: value }),
 
@@ -40,8 +43,13 @@ export const useStore = create<Store>((set) => ({
   testCompleted: false,
   setTestCompleted: (value) => set({ testCompleted: value }),
 
-  bestScore: null,
-  setBestScore: (value) => set({ bestScore: value }),
+  bestScore: best ? Number(best) : null,
+  setBestScore: (value) => {
+    if (value !== null) {
+      localStorage.setItem('BestScore', value.toString())
+    }
+    set({ bestScore: value })
+  },
 
   timer: 60,
   setTimer: (value) => set((state) => ({ timer: typeof value === 'function' ? value(state.timer) : value })),
@@ -60,4 +68,4 @@ export const useStore = create<Store>((set) => ({
 
   showHistory: false,
   setShowHistory: (value) => set({ showHistory: value })
-}))
+}})
