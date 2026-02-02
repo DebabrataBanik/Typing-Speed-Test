@@ -4,15 +4,15 @@ This is a solution to the **Typing Speed Test** challenge built as part of a Fro
 
 ## Table of Contents
 
-* [The Challenge](#the-challenge)
-* [Screenshots](#screenshots)
-* [Links](#links)
-* [Built with](#built-with)
-* [My Process](#my-process)
-* [Challenges Faced](#challenges-faced)
-* [What I learned](#what-i-learned)
-* [Continued Development](#continued-development)
-* [Author](#author)
+- [The Challenge](#the-challenge)
+- [Screenshots](#screenshots)
+- [Links](#links)
+- [Built with](#built-with)
+- [My Process](#my-process)
+- [Challenges Faced](#challenges-faced)
+- [What I learned](#what-i-learned)
+- [Continued Development](#continued-development)
+- [Author](#author)
 
 ## The Challenge
 
@@ -20,14 +20,13 @@ This project is a **Typing Speed Test** app that calculates WPM and accuracy in 
 
 ### Core features:
 
-* Start tests by clicking or simply by typing
-* Difficulty levels: Easy, Medium, Hard
-* Two modes: Timed (60s) and Passage-based 
-* Real-time stats with visual feedback for correct and incorrect characters
-* Results screen showing WPM, accuracy, and character counts 
-* Fully responsive design with proper hover and focus states
-
-> Personal best tracking using localStorage is planned but not implemented yet and is part of future development.
+- Start tests by clicking or simply by typing
+- Difficulty levels: Easy, Medium, Hard
+- Two modes: Timed (60s) and Passage-based
+- Real-time stats with visual feedback for correct and incorrect characters
+- Results screen showing WPM, accuracy, and character counts
+- Fully responsive design with proper hover and focus states
+- Personal best score and test results persisted in localStorage
 
 ## Screenshots
 
@@ -37,15 +36,16 @@ This project is a **Typing Speed Test** app that calculates WPM and accuracy in 
 
 ## Links
 
-* [Live Site URL](https://typing-speed-test-sigma-one.vercel.app/)
-* [Solution URL](https://www.frontendmentor.io/solutions/typing-speed-test-yEpVrFqCPa)
+- [Live Site URL](https://typing-speed-test-sigma-one.vercel.app/)
+- [Solution URL](https://www.frontendmentor.io/solutions/typing-speed-test-yEpVrFqCPa)
 
 ## Built with
 
-* React 
-* TypeScript
-* Tailwind CSS
-* Zustand
+- React
+- TypeScript
+- Tailwind CSS
+- Zustand
+- ShadcnUI
 
 ## My Process
 
@@ -83,7 +83,7 @@ Initially, I split the entire passage character by character and rendered everyt
 Figuring out the math behind typing statistics was more nuanced than expected.
 
 **WPM Calculation**:
-` WPM = (correct characters / 5) / time in minutes `
+`WPM = (correct characters / 5) / time in minutes`
 
 **Accuracy Calculation**:
 `Accuracy = (correct characters / total characters typed) × 100`
@@ -114,4 +114,4 @@ Figuring out the math behind typing statistics was more nuanced than expected.
 
 ## Author
 
-* Frontend Mentor - [@DebabrataBanik](https://www.frontendmentor.io/profile/DebabrataBanik)
+- Frontend Mentor - [@DebabrataBanik](https://www.frontendmentor.io/profile/DebabrataBanik)
