@@ -24,16 +24,17 @@ const History = ({ containerRef }: Props) => {
   const { setShowHistory } = useStore();
 
   useEffect(() => {
-    const keys = Object.keys(localStorage).filter(key => key.startsWith('res-'))
-    const res = keys.map(key => JSON.parse(localStorage.getItem(key) || '{}')).sort((a,b) => b.timestamp - a.timestamp)
-    setResults(res)
+    try {
+      const data = localStorage.getItem('typing-history')
+      const results = data ? JSON.parse(data) : []
+      setResults([...results].reverse())
+    } catch {
+      setResults([])
+    }
   }, [])
 
   const handleClearHistory = () => {
-    const keys = Object.keys(localStorage).filter(key => key.startsWith('res-'))
-    for(const key of keys){
-      localStorage.removeItem(key)
-    }
+    localStorage.removeItem('typing-history')
     setResults([])
   }
 
