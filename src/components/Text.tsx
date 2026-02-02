@@ -120,6 +120,7 @@ const Text = () => {
 
       if (currentWordIdx === words.length - 1 && value.length === currentWord.length) {
         setTestCompleted(true)
+        setIsStarted(false)
       }
     }
 
@@ -130,7 +131,7 @@ const Text = () => {
     })
     setInputText(value)
 
-  }, [currentWordIdx, inputText, words, setTestCompleted, isStarted, setAccuracy, setCorrectChars, setIncorrectChars])
+  }, [currentWordIdx, inputText, words, setTestCompleted, isStarted, setAccuracy, setCorrectChars, setIncorrectChars, setIsStarted])
 
   useEffect(() => {
     if (!isStarted) return
