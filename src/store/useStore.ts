@@ -28,7 +28,7 @@ type Store = {
 }
 
 export const useStore = create<Store>((set) => { 
-  const best = localStorage.getItem('BestScore')
+  const best = localStorage.getItem('personal-best')
 
   return {
   level: 'easy',
@@ -46,7 +46,7 @@ export const useStore = create<Store>((set) => {
   bestScore: best ? Number(best) : null,
   setBestScore: (value) => {
     if (value) {
-      localStorage.setItem('BestScore', value.toString())
+      localStorage.setItem('personal-best', value.toString())
     }
     set({ bestScore: value })
   },

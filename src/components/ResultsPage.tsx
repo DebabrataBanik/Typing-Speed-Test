@@ -4,6 +4,7 @@ import Confetti from '../assets/images/icon-new-pb.svg'
 import Restart from '../assets/images/icon-undo.svg'
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
+import type { Result } from "../types/project";
 
 const Result = {
   baseline: {
@@ -78,11 +79,24 @@ const ResultsPage = () => {
       triggerFireworks()
     }
 
-    const key = `res-${timestamp}`
-    const resObj = {
-      wpm, accuracy, correctChars, incorrectChars, timestamp
+    let historyArr: Result[]
+
+    try {
+      const data = localStorage.getItem('typing-history')
+      historyArr = data ? JSON.parse(data) : []
+    } catch {
+      historyArr = []
     }
-    localStorage.setItem(key, JSON.stringify(resObj))
+
+    const resObj = {
+      wpm, 
+      accuracy, 
+      correctChars, 
+      incorrectChars, 
+      timestamp
+    }   
+    const updatedHistory = [...historyArr, resObj]
+    localStorage.setItem('typing-history', JSON.stringify(updatedHistory))
   }, [])
 
   const handleRestart = () => {
