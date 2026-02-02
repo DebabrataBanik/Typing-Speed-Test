@@ -45,7 +45,7 @@ export const useStore = create<Store>((set) => {
 
   bestScore: best ? Number(best) : null,
   setBestScore: (value) => {
-    if (value !== null) {
+    if (value) {
       localStorage.setItem('BestScore', value.toString())
     }
     set({ bestScore: value })
