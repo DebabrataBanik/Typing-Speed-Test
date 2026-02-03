@@ -8,6 +8,8 @@ type Store = {
   setMode: (value: Mode) => void;
   isStarted: boolean;
   setIsStarted: (value: boolean) => void;
+  isPaused: boolean;
+  setisPaused: (value: boolean) => void;
   testCompleted: boolean;
   setTestCompleted: (value: boolean) => void;
   bestScore: number | null;
@@ -39,6 +41,9 @@ export const useStore = create<Store>((set) => {
 
   isStarted: false,
   setIsStarted: (value) => set({ isStarted: value }),
+
+  isPaused: false,
+  setisPaused: (value) => set({ isPaused: value }),
 
   testCompleted: false,
   setTestCompleted: (value) => set({ testCompleted: value }),

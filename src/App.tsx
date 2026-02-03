@@ -9,7 +9,7 @@ import { Toaster } from "./components/ui/sonner"
 import { toast } from "sonner"
 
 const App = () => {
-  const { isStarted, testCompleted, showHistory, setShowHistory, setIsStarted } = useStore();
+  const { isStarted, testCompleted, showHistory, setShowHistory, setIsStarted, setisPaused } = useStore();
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   
@@ -38,6 +38,7 @@ const App = () => {
         })
       }
     }
+    setisPaused(false)
     document.addEventListener('visibilitychange', handleTabChange)
     return () => document.removeEventListener('visibilitychange', handleTabChange)
   }, [isStarted])

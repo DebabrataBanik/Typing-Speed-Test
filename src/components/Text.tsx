@@ -3,10 +3,11 @@ import { getTextContent } from "../util/difficulty-text-map"
 import type { TextItem } from "../types/project"
 import { useStore } from "../store/useStore"
 import Overlay from "./Overlay"
+import { MousePointer2 } from "lucide-react"
 
 const Text = () => {
 
-  const { level, isStarted, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars, testCompleted } = useStore();
+  const { level, isStarted, isPaused, setisPaused, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars, testCompleted } = useStore();
   const [passage, setPassage] = useState<TextItem | null>(null)
   const [currentWordIdx, setCurrentWordIdx] = useState(0)
   const [typedWord, setTypedWord] = useState<string[]>([''])
@@ -155,13 +156,23 @@ const Text = () => {
     scrollIntoView()
   }, [currentWordIdx, scrollIntoView])
 
+  const handleBlur = () => {
+    if(isStarted) setisPaused(true)
+  }
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const input = e.currentTarget
+    input.setSelectionRange(input.value.length, input.value.length)
+    setisPaused(false)
+  }
+
   return (
     <section
       ref={containerRef}
       className="text-wrapper"
     >
       <div
-        className={!isStarted ? 'layer cursor-default' : ''}
+        className={!isStarted || isPaused ? 'layer cursor-default' : ''}
         onClick={() => {
           inputRef.current?.focus()
           setIsStarted(true)
@@ -173,7 +184,9 @@ const Text = () => {
           value={inputText}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          className="absolute opacity-0 pointer-events-none"
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          className="absolute opacity-0"
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
@@ -231,6 +244,13 @@ const Text = () => {
       </div>
       {
         !isStarted && <Overlay />
+      }
+      {
+        isPaused && 
+        <div className="w-max absolute top-1/2 left-1/2 -translate-1/2 flex items-center gap-2">
+          <MousePointer2 size={20} />
+          <p>Click the text to start typing</p>
+        </div>
       }
     </section>
   )

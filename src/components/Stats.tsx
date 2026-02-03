@@ -4,7 +4,7 @@ import { useStore } from "../store/useStore";
 import { formatTimer } from "../util/format-timer";
 
 const Stats = () => {
-  const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode, accuracy, wpm, timer, setTimer } = useStore();
+  const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode, accuracy, wpm, timer, setTimer, isPaused } = useStore();
 
   useEffect(() => {
     if (!isStarted) setTimer(mode === 'timed' ? 60 : 0);
@@ -12,7 +12,7 @@ const Stats = () => {
 
 
   useEffect(() => {
-    if (!isStarted) return
+    if (!isStarted || isPaused) return
 
     const timerId = setInterval(() => {
       setTimer(prev => {
@@ -26,7 +26,7 @@ const Stats = () => {
     }, 1000)
 
     return () => clearInterval(timerId);
-  }, [isStarted, mode])
+  }, [isStarted, mode, isPaused])
 
   useEffect(() => {
     if (mode === 'timed' && timer === 0 && isStarted) {
