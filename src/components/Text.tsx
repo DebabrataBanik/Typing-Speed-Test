@@ -7,7 +7,7 @@ import { MousePointer2 } from "lucide-react"
 
 const Text = () => {
 
-  const { level, isStarted, isPaused, setisPaused, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars, testCompleted } = useStore();
+  const { level, isStarted, isPaused, setIsPaused, setIsStarted, setTestCompleted, setAccuracy, setWpm, mode, timer, setCorrectChars, setIncorrectChars, testCompleted } = useStore();
   const [passage, setPassage] = useState<TextItem | null>(null)
   const [currentWordIdx, setCurrentWordIdx] = useState(0)
   const [typedWord, setTypedWord] = useState<string[]>([''])
@@ -157,28 +157,30 @@ const Text = () => {
   }, [currentWordIdx, scrollIntoView])
 
   const handleBlur = () => {
-    if(isStarted) setisPaused(true)
+    if(isStarted) setIsPaused(true)
   }
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const input = e.currentTarget
     input.setSelectionRange(input.value.length, input.value.length)
-    setisPaused(false)
+    inputRef.current?.focus()
+    setIsPaused(false)
   }
 
   return (
     <section
       ref={containerRef}
       className="text-wrapper"
+      onClick={() => {
+        inputRef.current?.focus()
+        setIsStarted(true)
+      }}
     >
       <div
         className={!isStarted || isPaused ? 'layer cursor-default' : ''}
-        onClick={() => {
-          inputRef.current?.focus()
-          setIsStarted(true)
-        }}
       >
         <input
+          name="input"
           type="text"
           ref={inputRef}
           value={inputText}
@@ -247,7 +249,8 @@ const Text = () => {
       }
       {
         isPaused && 
-        <div className="w-max absolute top-1/2 left-1/2 -translate-1/2 flex items-center gap-2">
+        <div
+          className="w-max absolute top-1/2 left-1/2 -translate-1/2 flex items-center gap-2 pointer-events-none">
           <MousePointer2 size={20} />
           <p>Click the text to start typing</p>
         </div>

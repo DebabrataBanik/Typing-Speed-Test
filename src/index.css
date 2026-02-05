@@ -157,7 +157,7 @@
     @apply flex items-center justify-between;
   }
   main{
-    @apply my-8 sm:my-10 xl:my-16;
+    @apply mt-8 sm:mt-10 xl:mt-16;
   }
 
   label{
@@ -259,14 +259,14 @@
   }
   
   .text-wrapper{
-    @apply max-h-[350px] sm:max-h-[330px] min-h-[260px] overflow-hidden outline-none;
+    @apply relative py-10 sm:py-20 max-h-[400px] overflow-hidden outline-none;
   }
   .layer{
     @apply blur-xs;
   }
 
   .text-container{
-    @apply text-[32px] sm:text-[40px] leading-[1.36] tracking-[0.4px] text-neutral-400;
+    @apply max-h-[245px] sm:max-h-[170px] text-3xl sm:text-4xl leading-[1.36] tracking-[1px] text-neutral-400 overflow-hidden;
   }
 
   .restart-btn{
@@ -356,7 +356,7 @@
   }  
 
   .word{
-    @apply inline-block mx-2 relative;
+    @apply inline-block mx-2 relative my-1;
   }
 
   .bar.word::before{

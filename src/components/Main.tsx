@@ -4,7 +4,7 @@ import Text from "./Text"
 const Main = () => {
 
   return (
-    <main className="flex flex-col gap-8">
+    <main className="flex flex-col">
       <Stats />
       <Text />
     </main>
