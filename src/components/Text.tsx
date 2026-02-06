@@ -157,23 +157,30 @@ const Text = () => {
   }, [currentWordIdx, scrollIntoView])
 
   const handleBlur = () => {
+    if (!document.hasFocus()) {
+      return; 
+    }
     if(isStarted) setIsPaused(true)
   }
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const input = e.currentTarget
     input.setSelectionRange(input.value.length, input.value.length)
-    inputRef.current?.focus()
     setIsPaused(false)
   }
 
   return (
     <section
       ref={containerRef}
-      className="text-wrapper"
+      className={`text-wrapper ${isStarted && !isPaused ? 'cursor-none' : ''} `}
       onClick={() => {
         inputRef.current?.focus()
         setIsStarted(true)
+      }}
+      onMouseDown={(e) => {
+        if(document.activeElement === inputRef.current){
+          e.preventDefault()
+        }
       }}
     >
       <div
@@ -250,9 +257,9 @@ const Text = () => {
       {
         isPaused && 
         <div
-          className="w-max absolute top-1/2 left-1/2 -translate-1/2 flex items-center gap-2 pointer-events-none">
+          className="w-[80%] sm:w-max absolute top-1/2 left-1/2 -translate-1/2 flex items-center gap-2 pointer-events-none">
           <MousePointer2 size={20} />
-          <p>Click the text to start typing</p>
+          <p className="text-sm sm:text-base text-center">You moved away! Click to start typing again</p>
         </div>
       }
     </section>
