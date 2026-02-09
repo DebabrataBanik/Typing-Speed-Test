@@ -6,7 +6,7 @@ const Overlay = () => {
 
   return (
     <div className="overlay">
-      <button onClick={() => setIsStarted(true)}>Start Typing Test</button>
+      <button aria-label="Start test" onClick={() => setIsStarted(true)}>Start Typing Test</button>
       <p>Or click the text and start typing</p>
     </div>
   )

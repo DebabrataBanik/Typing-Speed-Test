@@ -187,6 +187,7 @@ const Text = () => {
         className={!isStarted || isPaused ? 'layer cursor-default' : ''}
       >
         <input
+          aria-label="Typing input"
           name="input"
           type="text"
           ref={inputRef}

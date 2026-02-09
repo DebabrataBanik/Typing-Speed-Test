@@ -8,6 +8,7 @@ const Footer = () => {
   return (
     <footer>
       <button 
+        aria-label='Restart test'
         onClick={() => setIsStarted(false)}
         className='restart-btn'
       >

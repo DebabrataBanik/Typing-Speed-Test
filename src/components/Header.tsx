@@ -20,6 +20,7 @@ const Header = () => {
       </div>
       <div className="flex items-center gap-2.5">
         <button
+          aria-label="View History"
           onClick={(e) => {
             e.stopPropagation()
             setShowHistory(true)
