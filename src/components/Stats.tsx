@@ -6,14 +6,17 @@ import { formatTimer } from "../util/format-timer";
 const Stats = () => {
   const { isStarted, setIsStarted, setTestCompleted, setLevel, level, mode, setMode, accuracy, wpm, timer, setTimer, isPaused } = useStore();
 
+  // initialize timer when test is idle or mode changes
   useEffect(() => {
     if (!isStarted) setTimer(mode === 'timed' ? 60 : 0);
   }, [isStarted, mode])
 
 
   useEffect(() => {
+    // return if test not started or paused
     if (!isStarted || isPaused) return
 
+    // create timer interval
     const timerId = setInterval(() => {
       setTimer(prev => {
         if (mode === 'timed') {
@@ -25,9 +28,11 @@ const Stats = () => {
       })
     }, 1000)
 
+    // interavl cleanup
     return () => clearInterval(timerId);
   }, [isStarted, mode, isPaused])
 
+  // automatically end timed test when countdown reaches zero
   useEffect(() => {
     if (mode === 'timed' && timer === 0 && isStarted) {
       setIsStarted(false)
@@ -44,6 +49,7 @@ const Stats = () => {
     setMode(e.target.value as Mode)
   }
 
+  // allow Enter/Space to activate difficulty and mode selectors
   function handleKeyDown(e: React.KeyboardEvent<HTMLLabelElement>) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
