@@ -63,6 +63,7 @@ const ResultsPage = () => {
 
   let result
 
+  // Determine result state based on previous best score
   if (prevBestScore === null) {
     result = Result.baseline;
   } else if (wpm > prevBestScore) {
@@ -71,6 +72,7 @@ const ResultsPage = () => {
     result = Result.completed;
   }
 
+  // Run once on mount: persist results + update best score
   useEffect(() => {
     if (bestScore === null || wpm > bestScore) {
       setBestScore(wpm)
@@ -79,6 +81,7 @@ const ResultsPage = () => {
       triggerFireworks()
     }
 
+    // Persist current test result to localStorage
     let historyArr: Result[]
 
     try {
@@ -95,7 +98,7 @@ const ResultsPage = () => {
       incorrectChars, 
       timestamp
     }   
-    const updatedHistory = [...historyArr, resObj]
+    const updatedHistory = [...historyArr, resObj].slice(-50)
     localStorage.setItem('typing-history', JSON.stringify(updatedHistory))
   }, [])
 
