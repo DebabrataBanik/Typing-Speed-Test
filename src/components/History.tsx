@@ -2,6 +2,19 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Result } from "@/types/project";
 import { useStore } from "@/store/useStore";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogMedia
+} from "@/components/ui/alert-dialog"
+import { Trash2Icon } from "lucide-react";
 
 // format timestamp into date time
 const formatDate = (timestamp: number) => {
@@ -54,14 +67,46 @@ const History = ({ containerRef }: Props) => {
             <h2 className="text-lg font-semibold">Test Results</h2>
             <p className="text-neutral-400 text-xs">Recent Activity</p>
           </div>
-          <button
-            onClick={handleClearHistory} 
-            disabled={results.length === 0}
-            className={`ml-auto mr-4 text-xs px-3 py-1 shadow-md border rounded-md transition-all duration-200 ${
-              results.length === 0
-                ? 'text-neutral-600 border-neutral-800 cursor-not-allowed'
-                : 'text-neutral-400 border-transparent hover:border-neutral-700 active:shadow-none cursor-pointer'
-            }`}>Clear All</button>
+          
+          <AlertDialog>
+            <AlertDialogTrigger asChild disabled={results.length === 0}>
+            <button
+              className={`ml-auto mr-4 text-xs px-3 py-1 shadow-md border rounded-md transition-all duration-200 ${
+                results.length === 0
+                  ? 'text-neutral-600 border-neutral-800 cursor-not-allowed'
+                  : 'text-neutral-400 border-transparent hover:border-neutral-700 active:shadow-none cursor-pointer'
+              }`}>
+                Clear All
+              </button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent className="font-sora bg-neutral-800 border border-neutral-700 flex flex-col items-center w-fit">
+              <AlertDialogHeader className="flex flex-col items-center">
+                <AlertDialogMedia className="flex items-center justify-center w-10 h-10 bg-red-500/20 mx-auto">
+                  <Trash2Icon className="text-red-500" />
+                </AlertDialogMedia>
+                <AlertDialogTitle className="mx-auto">Clear all history?</AlertDialogTitle>
+                <AlertDialogDescription className="text-center w-60">
+                  This will delete all previous test results. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter className="flex flex-row">
+                <AlertDialogCancel 
+                  autoFocus
+                  className="bg-neutral-800 border border-neutral-700 cursor-pointer hover:bg-neutral-700 hover:text-neutral-0"
+                  >
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction 
+                  className="bg-red-500/20 text-red-500 hover:bg-red-500/40 cursor-pointer"
+                  onClick={handleClearHistory}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
           <button
             onClick={() => setShowHistory(false)} 
             className="cursor-pointer border border-transparent hover:border-neutral-700 hover:scale-90 shadow-md rounded-full transition-all duration-200"
