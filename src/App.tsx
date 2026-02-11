@@ -12,9 +12,11 @@ const App = () => {
   const { isStarted, testCompleted, showHistory, setShowHistory, setIsStarted, setIsPaused } = useStore();
   const containerRef = useRef<HTMLDivElement | null>(null)
 
-  
+  // close history overlay handler
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
+      // Close History overlay when user clicks anywhere outside the panel
+      // (global listener needed because overlay lives above main layout)
       if(containerRef.current && !containerRef.current.contains(e.target as Node)){
         setShowHistory(false)
       }
@@ -23,10 +25,13 @@ const App = () => {
     return () => window.removeEventListener('click', handleClick)
   }, [])
 
+  // tab visibility change handler
   useEffect(() => {
     const handleTabChange = () => {
+      // stop test if user switches tabs while test is running
       if (isStarted && document.visibilityState === 'hidden') {
         setIsStarted(false)
+        // show error toast when tab is left during test
         toast.error('Your test was stopped because you moved away from the page.', { 
           position: 'top-right',
           style: {
@@ -38,6 +43,7 @@ const App = () => {
         })
       }
     }
+    // force paused state to false on load
     setIsPaused(false)
     document.addEventListener('visibilitychange', handleTabChange)
     return () => document.removeEventListener('visibilitychange', handleTabChange)
@@ -45,6 +51,7 @@ const App = () => {
 
   return (
     <div className="relative">
+      {/* History overlay (rendered above app when active) */}
       {showHistory && <History containerRef={containerRef} />}
       <div className={`wrapper ${showHistory ? 'mask': ''}`}>
         <Header />
