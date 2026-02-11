@@ -9,16 +9,13 @@ const Header = () => {
   return (
     <header>
       <div className="hidden sm:flex items-center gap-2">
-        <a>
-          <img src={logoLarge} alt="Logo" />
-        </a>
+        <img src={logoLarge} alt="Logo" />
       </div>
       <div className="flex items-center w-[28px] h-[28px] sm:hidden">
-        <a>
-          <img src={logoSmall} alt='Logo' />
-        </a>
+        <img src={logoSmall} alt='Logo' />
       </div>
       <div className="flex items-center gap-2.5">
+        {/* Stop click from bubbling to App's global window handler (Prevent this click from being treated as an outside click by App.tsx) */}
         <button
           aria-label="View History"
           onClick={(e) => {
@@ -28,6 +25,8 @@ const Header = () => {
           className="cursor-pointer self-end mr-1">
           <History className="w-[18px] h-[18px] sm:w-5 sm:h-5 text-neutral-400" />
         </button>
+
+        {/* User's personal best score (persisted) */}
         <img src={personalBest} className="w-[18px] h-4 sm:w-5 sm:h-[18px]" alt="Personal Best" />
         <p className="text-base -tracking-[0.48px] sm:text-lg leading-[1.2] sm:-tracking-[0.6px] text-neutral-400">
           <span className="hidden sm:inline-block">Personal best:</span>
