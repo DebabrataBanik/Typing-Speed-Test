@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { Result } from "@/types/project";
 import { useStore } from "@/store/useStore";
 
+// format timestamp into date time
 const formatDate = (timestamp: number) => {
   const dateObj = new Date(timestamp);
   return {
@@ -15,7 +16,7 @@ const formatDate = (timestamp: number) => {
 };
 
 type Props = {
-  containerRef: React.Ref<HTMLDivElement>; 
+  containerRef: React.RefObject<HTMLDivElement | null>; 
 } 
 
 const History = ({ containerRef }: Props) => {
@@ -23,22 +24,26 @@ const History = ({ containerRef }: Props) => {
   const [results, setResults] = useState<Result[]>([])
   const { setShowHistory } = useStore();
 
+  // Load persisted typing history on mount
   useEffect(() => {
     try {
       const data = localStorage.getItem('typing-history')
       const results = data ? JSON.parse(data) : []
+      // Reverse so newest results appear first
       setResults([...results].reverse())
     } catch {
       setResults([])
     }
   }, [])
 
+  // Clear persisted history and reset local state
   const handleClearHistory = () => {
     localStorage.removeItem('typing-history')
     setResults([])
   }
 
   return (
+    // History panel container (used by App.tsx to detect outside clicks)
     <div 
       ref={containerRef}
       className="history_wrapper"
