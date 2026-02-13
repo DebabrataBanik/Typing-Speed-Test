@@ -1,4 +1,4 @@
-import Restart from '../assets/images/icon-restart.svg'
+import { RotateCw } from 'lucide-react';
 import { useStore } from '../store/useStore'
 
 const Footer = () => {
@@ -7,13 +7,12 @@ const Footer = () => {
 
   return (
     <footer>
-      <button 
+      <button
         aria-label='Restart test'
         onClick={() => setIsStarted(false)}
-        className='restart-btn'
+        className='text-neutral-400 cursor-pointer'
       >
-        Restart Test
-        <img src={Restart} />
+        <RotateCw />
       </button>
     </footer>
   )

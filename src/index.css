@@ -227,7 +227,7 @@
   }
 
   footer{
-    @apply w-full pt-6 xl:pt-8 flex justify-center border-t border-neutral-700;
+    @apply w-full pt-6 xl:pt-8 flex justify-center;
   }
 
 }
