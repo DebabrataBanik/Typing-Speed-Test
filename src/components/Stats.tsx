@@ -81,59 +81,38 @@ const Stats = () => {
         {/* Right Settings */}
         <div className="col-span-6 col-start-7 flex items-center gap-3.5">
           {/* Difficulty Settings */}
+          {/* For larger viewports */}
           <div className="hidden sm:flex items-center justify-between gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Difficulty:</span>
             <div className="flex items-center gap-1.5">
-              <label
-                className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={isStarted ? -1 : 0}
-                onKeyDown={handleKeyDown}
-              >
-                <input
-                  onChange={handleDifficultyChange}
-                  type="radio"
-                  name="difficulty"
-                  value='easy'
-                  checked={level === 'easy'}
-                  disabled={isStarted}
-                  tabIndex={-1}
-                />
-                Easy
-              </label>
-              <label
-                className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={isStarted ? -1 : 0}
-                onKeyDown={handleKeyDown}
-              >
-                <input
-                  onChange={handleDifficultyChange}
-                  type="radio"
-                  name="difficulty"
-                  value='medium'
-                  checked={level === 'medium'}
-                  disabled={isStarted}
-                  tabIndex={-1}
-                />
-                Medium
-              </label>
-              <label
-                className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={isStarted ? -1 : 0}
-                onKeyDown={handleKeyDown}
-              >
-                <input
-                  onChange={handleDifficultyChange}
-                  type="radio"
-                  name="difficulty"
-                  value='hard'
-                  checked={level === 'hard'}
-                  disabled={isStarted}
-                />
-                Hard
-              </label>
+              {
+                [
+                  {label: 'Easy', value: 'easy'}, 
+                  {label: 'Medium', value: 'medium'}, 
+                  {label: 'Hard', value: 'hard'}
+                ].map(item => (
+                  <label
+                    className={isStarted ? 'cursor-not-allowed' : ''}
+                    tabIndex={isStarted ? -1 : 0}
+                    onKeyDown={handleKeyDown}               
+                  >
+                    <input 
+                      onChange={handleDifficultyChange}
+                      type="radio"
+                      name="difficulty"
+                      value={item.value}
+                      checked={level === item.value}
+                      disabled={isStarted}
+                      tabIndex={-1}
+                    />
+                    {item.label}
+                  </label>
+                ))
+              }
             </div>
           </div>
 
+          {/* For smaller viewports */}
           <div className="sm:hidden flex-1 flex justify-center">
             <select
               name="difficulty"
@@ -143,12 +122,6 @@ const Stats = () => {
               tabIndex={0}
               className='bg-position-[center_right_20%]'
             >
-              {/* <button>
-                <selectedcontent></selectedcontent>
-                <span>
-                  <img src={ArrowDown} />
-                </span>
-              </button> */}
               <option value="easy">
                 Easy
               </option>
@@ -165,44 +138,37 @@ const Stats = () => {
           <span className="hidden sm:block stats_bar h-8 xl:h-full"></span>
 
           {/* Mode Settings */}
+          {/* For larger viewports */}
           <div className="hidden sm:flex items-center gap-3">
             <span className="leading-[1.2] -tracking-[0.48px] text-neutral-400">Mode:</span>
             <div className="flex items-center gap-1.5">
-              <label
-                className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={isStarted ? -1 : 0}
-                onKeyDown={handleKeyDown}
-              >
-                <input
-                  onChange={handleModeChange}
-                  type="radio"
-                  name="mode"
-                  value='timed'
-                  checked={mode === 'timed'}
-                  disabled={isStarted}
-                  tabIndex={-1}
-                />
-                Timed (60s)
-              </label>
-              <label
-                className={isStarted ? 'cursor-not-allowed' : ''}
-                tabIndex={isStarted ? -1 : 0}
-                onKeyDown={handleKeyDown}
-              >
-                <input
-                  onChange={handleModeChange}
-                  type="radio"
-                  name="mode"
-                  value='passage'
-                  checked={mode === 'passage'}
-                  disabled={isStarted}
-                  tabIndex={-1}
-                />
-                Passage
-              </label>
+              {
+                [
+                  {label: 'Timed', value: 'timed'}, 
+                  {label: 'Passage (60s)', value: 'passage'}
+                ].map(item => (
+                  <label
+                    className={isStarted ? 'cursor-not-allowed' : ''}
+                    tabIndex={isStarted ? -1 : 0}
+                    onKeyDown={handleKeyDown}
+                  >
+                    <input
+                      onChange={handleModeChange}
+                      type="radio"
+                      name="mode"
+                      value={item.value}
+                      checked={mode === item.value}
+                      disabled={isStarted}
+                      tabIndex={-1}
+                    />
+                    {item.label}
+                  </label>
+                ))
+              }
             </div>
           </div>
-
+          
+          {/* For smaller viewports */}
           <div className="sm:hidden flex-1 flex justify-center">
             <select
               name="mode"
@@ -212,12 +178,6 @@ const Stats = () => {
               tabIndex={0}
               className='bg-position-[center_right_10%]'
             >
-              {/* <button>
-                <selectedcontent></selectedcontent>
-                <span>
-                  <img src={ArrowDown} />
-                </span>
-              </button> */}
               <option value="timed">
                 Timed (60s)
               </option>
