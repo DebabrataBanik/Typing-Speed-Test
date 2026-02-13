@@ -9,6 +9,7 @@ const Footer = () => {
     <footer>
       <button
         aria-label='Restart test'
+        onMouseDown={(e) => e.preventDefault()}
         onClick={() => setIsStarted(false)}
         className='text-neutral-400 cursor-pointer'
       >
